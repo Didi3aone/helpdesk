@@ -36,7 +36,7 @@
                 data-widget-deletebutton="false">
                     <header>
                         <span class="widget-icon"> <i class="fa fa-pencil-square-o"></i> </span>
-                        <h2><?= $title_msg ?> User</h2>
+                        <h2><?= $title_msg ?> Fakultas</h2>
 
                     </header>
                     <!-- widget div-->

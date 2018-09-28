@@ -5,7 +5,7 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="<?= base_url(); ?>assets/css/bootstrap.min.css">
 </head>
 <body>
-	<table border="1">
+	<table class="table table-striped">
 		<caption>Report Complain Bagian Keuangan</caption>
 		<p> START DATE = <?= $_REQUEST['start_date']; ?></p>
 		<p> END DATE = <?= $_REQUEST['end_date']; ?></p>
