@@ -373,7 +373,7 @@ class Mahasiswa extends MX_Controller  {
                     $message['notif_message']   = "Register success.";
 
                     //on insert, not redirected.
-                    $message['redirect_to'] = site_url("mahasiswa/login");
+                    $message['redirect_to'] = site_url("mahasiswa");
                 }
             } else {
                 //update.

@@ -4,13 +4,6 @@
 		<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
 			<h1 class="page-title txt-color-blueDark"><?= $title_page ?></h1>
 		</div>
-		<div class="col-xs-12 col-sm-5 col-md-5 col-lg-4 col-lg-offset-1 text-right">
-			<h1>
-				<a class="btn btn-primary" href="<?= site_url(); ?>user/create" rel="tooltip" title="Add new User" data-placement="left">
-					<i class="fa fa-plus fa-lg"></i>
-				</a>
-			</h1>
-		</div>
 	</div>
 
 	<!-- widget grid -->

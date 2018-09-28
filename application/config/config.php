@@ -31,10 +31,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //     //for production
 //     $config['base_url'] = 'http://avianvm.local/';
 // }
-// $root=(isset($_SERVER['HTTPS']) ? "https://" : "http://").$_SERVER['HTTP_HOST'];
-// $root.= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
-// $config['base_url'] = $root;
-$config['base_url'] = 'http://127.0.0.1/helpdesk_camp';
+$root=(isset($_SERVER['HTTPS']) ? "https://" : "http://").$_SERVER['HTTP_HOST'];
+$root.= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
+$config['base_url'] = $root;
+// $config['base_url'] = 'http://127.0.0.1/helpdesk_camp';
 
 /*
 |--------------------------------------------------------------------------

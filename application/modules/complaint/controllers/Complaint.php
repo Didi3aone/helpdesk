@@ -499,9 +499,10 @@ class Complaint extends MX_Controller {
 
         $column_sort = $select[$sort_col];
 
+        $id_mhs = $this->session->userdata("id_mhs");
         //initialize.
         $data_filters = array();
-        $conditions = array();
+        $conditions = array("tc.ComplainMahasiswaId" => $id_mhs);
         $status = STATUS_ACTIVE;
 
         if (count ($filter) > 0) {

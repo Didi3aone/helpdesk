@@ -12,9 +12,9 @@
 		</div>
         <div class="col-xs-12 col-sm-5 col-md-5 col-lg-4 col-lg-offset-1 text-right">
 			<h1>
-                <button class="btn btn-warning back-button" onclick="<?= (isset($back) ? "go('".$back."');" : "window.history.back();") ?>" title="Back" rel="tooltip" data-placement="left" data-original-title="Batal">
+                <a class="btn btn-warning back-button" href="<?= site_url("complaint/tracking-state"); ?>" title="Back" rel="tooltip" data-placement="left" data-original-title="Batal">
 					<i class="fa fa-arrow-circle-left fa-lg"></i>
-				</button>
+				</a>
 				<button class="btn btn-primary submit-form" data-form-target="user-form" title="Simpan" rel="tooltip" data-placement="top" >
 					<i class="fa fa-floppy-o fa-lg"></i>
 				</button>
