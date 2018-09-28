@@ -19,17 +19,18 @@ class Report extends CI_Controller {
 		//set header attribute.
         $header = array(
             "title"         => $this->_title,
-            "title_page"    => $this->_title_page . '<span>> List Admin</span>',
+            "title_page"    => $this->_title_page . '<span>> Get Report</span>',
             "active_page"   => "GET",
-            "breadcrumb"    => $this->_breadcrumb . '<li>Admin</li>',
+            "breadcrumb"    => $this->_breadcrumb . '<li>Report</li>',
         );
 
+        $data['bagian'] = $this->Dynamic_model->set_model("tbl_user_type","tut","type_id")->get_all_data()['datas'];
 		$footer = array(
 			"view_js_nav" => $this->_view_folder."rpt_js"
 		);
 		//load the views.
         $this->load->view(MANAGER_HEADER, $header);
-        $this->load->view($this->_view_folder.'index');
+        $this->load->view($this->_view_folder.'index',$data);
         $this->load->view(MANAGER_FOOTER,$footer);
 	}
 

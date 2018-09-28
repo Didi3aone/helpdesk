@@ -147,6 +147,22 @@
 							<li class="<?= (isset($active_page) && $active_page == 'list-kemahasiswaan') ? "active" : "" ?>">
 								<a href="<?= site_url('complaint/list-kemahasiswaan'); ?>" title="Bagian Kemahasiswaan"><span class="menu-item-parent">Bagian Kemahasiswaan</span></a>
 							</li>
+
+							<li class="<?= (isset($active_page) && $active_page == 'list-akademik') ? "active" : "" ?>">
+								<a href="<?= site_url('complaint/list-akademik'); ?>" title="Bagian Akademik"><span class="menu-item-parent">Bagian Akademik</span></a>
+							</li>
+
+							<li class="<?= (isset($active_page) && $active_page == 'list-sdm') ? "active" : "" ?>">
+								<a href="<?= site_url('complaint/list-sdm'); ?>" title="Bagian SDM"><span class="menu-item-parent">Bagian SDM</span></a>
+							</li>
+
+							<li class="<?= (isset($active_page) && $active_page == 'list-alumni') ? "active" : "" ?>">
+								<a href="<?= site_url('complaint/list-alumni'); ?>" title="Bagian ALUMNI"><span class="menu-item-parent">Bagian ALUMNI</span></a>
+							</li>
+
+							<li class="<?= (isset($active_page) && $active_page == 'list-umum') ? "active" : "" ?>">
+								<a href="<?= site_url('complaint/list-umum'); ?>" title="Bagian UMUM"><span class="menu-item-parent">Bagian UMUM</span></a>
+							</li>
 						</ul>
 					</li>
 
@@ -215,9 +231,25 @@
                             <li class="<?= (isset($active_page) && $active_page == 'list-keuangan') ? "active" : "" ?>">
 								<a href="<?= site_url('complaint/list-keuangan'); ?>" title="Bagian Keuangan"><span class="menu-item-parent">Bagian Keuangan</span></a>
 							</li>
-							<?php else : ?>
+							<?php elseif( $type == "BAGIAN KEMAHASISWAAN") : ?>
 							<li class="<?= (isset($active_page) && $active_page == 'list-kemahasiswaan') ? "active" : "" ?>">
 								<a href="<?= site_url('complaint/list-kemahasiswaan'); ?>" title="Bagian Kemahasiswaan"><span class="menu-item-parent">Bagian Kemahasiswaan</span></a>
+							</li>
+							<?php elseif( $type == "BAGIAN AKADEMIK") : ?>
+							<li class="<?= (isset($active_page) && $active_page == 'list-akademik') ? "active" : "" ?>">
+								<a href="<?= site_url('complaint/list-akademik'); ?>" title="Bagian Kemahasiswaan"><span class="menu-item-parent">Bagian Akademik</span></a>
+							</li>
+							<?php elseif( $type == "BAGIAN SDM") : ?>
+							<li class="<?= (isset($active_page) && $active_page == 'list-sdm') ? "active" : "" ?>">
+								<a href="<?= site_url('complaint/list-sdm'); ?>" title="Bagian Kemahasiswaan"><span class="menu-item-parent">Bagian SDM</span></a>
+							</li>
+							<?php elseif( $type == "BAGIAN ALUMNI") : ?>
+							<li class="<?= (isset($active_page) && $active_page == 'list-alumni') ? "active" : "" ?>">
+								<a href="<?= site_url('complaint/list-alumni'); ?>" title="Bagian Kemahasiswaan"><span class="menu-item-parent">Bagian ALUMNI</span></a>
+							</li>
+							<?php else : ?>
+							<li class="<?= (isset($active_page) && $active_page == 'list-umum') ? "active" : "" ?>">
+								<a href="<?= site_url('complaint/list-umum'); ?>" title="Bagian Kemahasiswaan"><span class="menu-item-parent">Bagian SDM</span></a>
 							</li>
 							<?php endif;?>
 						</ul>

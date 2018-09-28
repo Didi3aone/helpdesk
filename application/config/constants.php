@@ -155,3 +155,7 @@ define("STATUS_SEND_COMPLAIN", 1);
 define("STATUS_READ_COMPLAIN", 2);
 define("BAGIAN_KEUANGAN", 1);
 define("BAGIAN_KEMAHASISWAAN", 2);
+define("BAGIAN_AKADEMIK", 3);
+define("BAGIAN_SDM", 4);
+define("BAGIAN_ALUMNI", 5);
+define("BAGIAN_UMUM", 6);

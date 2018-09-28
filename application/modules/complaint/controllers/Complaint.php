@@ -154,6 +154,122 @@ class Complaint extends MX_Controller {
     /**
     * list complaint
     */
+    public function list_akademik()
+    {
+        //set header attribute.
+        $header = array(
+            "title"         => $this->_title,
+            "title_page"    => $this->_title_page . '<span>> Complain Akademik</span>',
+            "active_page"   => "list-akademik",
+            "breadcrumb"    => $this->_breadcrumb . '<li>Complain</li>',
+        );
+
+        //set footer attribute (additional script and css).
+        $footer = array(
+            "script" => array(
+                "assets/js/plugins/datatables/jquery.dataTables.min.js",
+                "assets/js/plugins/datatables/dataTables.bootstrap.min.js",
+                "assets/js/plugins/datatable-responsive/datatables.responsive.min.js",
+            ),
+            "view_js_nav" => $this->_view_folder_js ."list_akademik_js"
+        );
+
+        //load the views.
+        $this->load->view(MANAGER_HEADER , $header);
+        $this->load->view($this->_view_folder . 'index-akademik');
+        $this->load->view(MANAGER_FOOTER , $footer);
+    }
+
+    /**
+    * list complaint
+    */
+    public function list_sdm()
+    {
+        //set header attribute.
+        $header = array(
+            "title"         => $this->_title,
+            "title_page"    => $this->_title_page . '<span>> Complain SDM</span>',
+            "active_page"   => "list-sdm",
+            "breadcrumb"    => $this->_breadcrumb . '<li>Complain</li>',
+        );
+
+        //set footer attribute (additional script and css).
+        $footer = array(
+            "script" => array(
+                "assets/js/plugins/datatables/jquery.dataTables.min.js",
+                "assets/js/plugins/datatables/dataTables.bootstrap.min.js",
+                "assets/js/plugins/datatable-responsive/datatables.responsive.min.js",
+            ),
+            "view_js_nav" => $this->_view_folder_js ."list_sdm_js"
+        );
+
+        //load the views.
+        $this->load->view(MANAGER_HEADER , $header);
+        $this->load->view($this->_view_folder . 'index-sdm');
+        $this->load->view(MANAGER_FOOTER , $footer);
+    }
+
+    /**
+    * list complaint
+    */
+    public function list_alumni()
+    {
+        //set header attribute.
+        $header = array(
+            "title"         => $this->_title,
+            "title_page"    => $this->_title_page . '<span>> Complain Alumni</span>',
+            "active_page"   => "list-alumni",
+            "breadcrumb"    => $this->_breadcrumb . '<li>Complain</li>',
+        );
+
+        //set footer attribute (additional script and css).
+        $footer = array(
+            "script" => array(
+                "assets/js/plugins/datatables/jquery.dataTables.min.js",
+                "assets/js/plugins/datatables/dataTables.bootstrap.min.js",
+                "assets/js/plugins/datatable-responsive/datatables.responsive.min.js",
+            ),
+            "view_js_nav" => $this->_view_folder_js ."list_alumni_js"
+        );
+
+        //load the views.
+        $this->load->view(MANAGER_HEADER , $header);
+        $this->load->view($this->_view_folder . 'index-alumni');
+        $this->load->view(MANAGER_FOOTER , $footer);
+    }
+
+    /**
+    * list complaint
+    */
+    public function list_umum()
+    {
+        //set header attribute.
+        $header = array(
+            "title"         => $this->_title,
+            "title_page"    => $this->_title_page . '<span>> Complain UMUM</span>',
+            "active_page"   => "list-umum",
+            "breadcrumb"    => $this->_breadcrumb . '<li>Complain</li>',
+        );
+
+        //set footer attribute (additional script and css).
+        $footer = array(
+            "script" => array(
+                "assets/js/plugins/datatables/jquery.dataTables.min.js",
+                "assets/js/plugins/datatables/dataTables.bootstrap.min.js",
+                "assets/js/plugins/datatable-responsive/datatables.responsive.min.js",
+            ),
+            "view_js_nav" => $this->_view_folder_js ."list_umum_js"
+        );
+
+        //load the views.
+        $this->load->view(MANAGER_HEADER , $header);
+        $this->load->view($this->_view_folder . 'index-umum');
+        $this->load->view(MANAGER_FOOTER , $footer);
+    }
+
+    /**
+    * list complaint
+    */
     public function tracking_state()
     {
         //set header attribute.
@@ -463,6 +579,482 @@ class Complaint extends MX_Controller {
         exit;
     }
 
+    public function list_all_akademik() {
+        //must ajax and must get.
+        if (!$this->input->is_ajax_request() || $this->input->method(true) != "GET") {
+            exit('No direct script access allowed');
+        }
+
+        //load model
+        $this->load->model('Dynamic_model');
+
+        //sanitize and get inputed data
+        $sort_col = sanitize_str_input($this->input->get("order")['0']['column'], "numeric");
+        $sort_dir = sanitize_str_input($this->input->get("order")['0']['dir']);
+        $limit = sanitize_str_input($this->input->get("length"), "numeric");
+        $start = sanitize_str_input($this->input->get("start"), "numeric");
+        $search = sanitize_str_input($this->input->get("search")['value']);
+        $filter = $this->input->get("filter");
+
+        $select = array(
+            'tc.ComplainId',
+            'tc.ComplainName',
+            'mm.MahasiswaName',
+            'mm.MahasiswaNim',
+            'mf.FakultasName',
+            'tut.type_name',
+            'tc.ComplainCreatedDate',
+            'IF(tc.ComplainIsState = 2,"READ","UNREAD") as status'
+        );
+
+        $joined = array(
+            "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
+            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
+        );
+
+        $column_sort = $select[$sort_col];
+
+        //initialize.
+        $data_filters = array();
+        $conditions = array("tc.ComplainToId" => BAGIAN_AKADEMIK);
+        $status = STATUS_ACTIVE;
+
+        if (count ($filter) > 0) {
+            foreach ($filter as $key => $value) {
+                $value = sanitize_str_input($value);
+                switch ($key) {
+                    case 'name':
+                        if ($value != "") {
+                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                        }
+                        break;
+
+                    case 'nim':
+                        if ($value != "") {
+                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                        }
+                        break;
+
+                    case 'fakultas':
+                        if ($value != "") {
+                            $data_filters['lower(mf.FakultasName)'] = $value;
+                        }
+                        break;
+
+                    case 'bagian':
+                        if ($value != "") {
+                            $data_filters['lower(tut.type_name)'] = $value;
+                        }
+                        break;
+
+                    case 'status':
+                        if ($value != "") {
+                            $status = ($value == "active") ? STATUS_ACTIVE : STATUS_DELETE;
+                        }
+                        break;
+
+                    case 'tanggal':
+                        if ($value != "") {
+                            $date = parse_date_range($value);
+                            $conditions["cast(tc.ComplainCreatedDate as date) <="] = $date['end'];
+                            $conditions["cast(tc.ComplainCreatedDate as date) >="] = $date['start'];
+
+                        }
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+        }
+
+        //get data
+        $datas = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
+            'select'            => $select,
+            'joined'            => $joined,
+            'order_by'          => array($column_sort => $sort_dir),
+            'limit'             => $limit,
+            'start'             => $start,
+            'conditions'        => $conditions,
+            'filter'            => $data_filters,
+            "count_all_first"   => true,
+            'debug'             => false
+        ));
+
+        //get total rows
+        $total_rows = $datas['total'];
+
+        $output = array(
+            "data" => $datas['datas'],
+            "draw" => intval($this->input->get("draw")),
+            "recordsTotal" => $total_rows,
+            "recordsFiltered" => $total_rows,
+        );
+
+        //encoding and returning.
+        $this->output->set_content_type('application/json');
+        echo json_encode($output);
+        exit;
+    }
+
+    public function list_all_sdm() {
+        //must ajax and must get.
+        if (!$this->input->is_ajax_request() || $this->input->method(true) != "GET") {
+            exit('No direct script access allowed');
+        }
+
+        //load model
+        $this->load->model('Dynamic_model');
+
+        //sanitize and get inputed data
+        $sort_col = sanitize_str_input($this->input->get("order")['0']['column'], "numeric");
+        $sort_dir = sanitize_str_input($this->input->get("order")['0']['dir']);
+        $limit = sanitize_str_input($this->input->get("length"), "numeric");
+        $start = sanitize_str_input($this->input->get("start"), "numeric");
+        $search = sanitize_str_input($this->input->get("search")['value']);
+        $filter = $this->input->get("filter");
+
+        $select = array(
+            'tc.ComplainId',
+            'tc.ComplainName',
+            'mm.MahasiswaName',
+            'mm.MahasiswaNim',
+            'mf.FakultasName',
+            'tut.type_name',
+            'tc.ComplainCreatedDate',
+            'IF(tc.ComplainIsState = 2,"READ","UNREAD") as status'
+        );
+
+        $joined = array(
+            "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
+            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
+        );
+
+        $column_sort = $select[$sort_col];
+
+        //initialize.
+        $data_filters = array();
+        $conditions = array("tc.ComplainToId" => BAGIAN_SDM);
+        $status = STATUS_ACTIVE;
+
+        if (count ($filter) > 0) {
+            foreach ($filter as $key => $value) {
+                $value = sanitize_str_input($value);
+                switch ($key) {
+                    case 'name':
+                        if ($value != "") {
+                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                        }
+                        break;
+
+                    case 'nim':
+                        if ($value != "") {
+                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                        }
+                        break;
+
+                    case 'fakultas':
+                        if ($value != "") {
+                            $data_filters['lower(mf.FakultasName)'] = $value;
+                        }
+                        break;
+
+                    case 'bagian':
+                        if ($value != "") {
+                            $data_filters['lower(tut.type_name)'] = $value;
+                        }
+                        break;
+
+                    case 'status':
+                        if ($value != "") {
+                            $status = ($value == "active") ? STATUS_ACTIVE : STATUS_DELETE;
+                        }
+                        break;
+
+                    case 'tanggal':
+                        if ($value != "") {
+                            $date = parse_date_range($value);
+                            $conditions["cast(tc.ComplainCreatedDate as date) <="] = $date['end'];
+                            $conditions["cast(tc.ComplainCreatedDate as date) >="] = $date['start'];
+
+                        }
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+        }
+
+        //get data
+        $datas = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
+            'select'            => $select,
+            'joined'            => $joined,
+            'order_by'          => array($column_sort => $sort_dir),
+            'limit'             => $limit,
+            'start'             => $start,
+            'conditions'        => $conditions,
+            'filter'            => $data_filters,
+            "count_all_first"   => true,
+            'debug'             => false
+        ));
+
+        //get total rows
+        $total_rows = $datas['total'];
+
+        $output = array(
+            "data" => $datas['datas'],
+            "draw" => intval($this->input->get("draw")),
+            "recordsTotal" => $total_rows,
+            "recordsFiltered" => $total_rows,
+        );
+
+        //encoding and returning.
+        $this->output->set_content_type('application/json');
+        echo json_encode($output);
+        exit;
+    }
+
+    public function list_all_alumni() {
+        //must ajax and must get.
+        if (!$this->input->is_ajax_request() || $this->input->method(true) != "GET") {
+            exit('No direct script access allowed');
+        }
+
+        //load model
+        $this->load->model('Dynamic_model');
+
+        //sanitize and get inputed data
+        $sort_col = sanitize_str_input($this->input->get("order")['0']['column'], "numeric");
+        $sort_dir = sanitize_str_input($this->input->get("order")['0']['dir']);
+        $limit = sanitize_str_input($this->input->get("length"), "numeric");
+        $start = sanitize_str_input($this->input->get("start"), "numeric");
+        $search = sanitize_str_input($this->input->get("search")['value']);
+        $filter = $this->input->get("filter");
+
+        $select = array(
+            'tc.ComplainId',
+            'tc.ComplainName',
+            'mm.MahasiswaName',
+            'mm.MahasiswaNim',
+            'mf.FakultasName',
+            'tut.type_name',
+            'tc.ComplainCreatedDate',
+            'IF(tc.ComplainIsState = 2,"READ","UNREAD") as status'
+        );
+
+        $joined = array(
+            "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
+            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
+        );
+
+        $column_sort = $select[$sort_col];
+
+        //initialize.
+        $data_filters = array();
+        $conditions = array("tc.ComplainToId" => BAGIAN_ALUMNI);
+        $status = STATUS_ACTIVE;
+
+        if (count ($filter) > 0) {
+            foreach ($filter as $key => $value) {
+                $value = sanitize_str_input($value);
+                switch ($key) {
+                    case 'name':
+                        if ($value != "") {
+                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                        }
+                        break;
+
+                    case 'nim':
+                        if ($value != "") {
+                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                        }
+                        break;
+
+                    case 'fakultas':
+                        if ($value != "") {
+                            $data_filters['lower(mf.FakultasName)'] = $value;
+                        }
+                        break;
+
+                    case 'bagian':
+                        if ($value != "") {
+                            $data_filters['lower(tut.type_name)'] = $value;
+                        }
+                        break;
+
+                    case 'status':
+                        if ($value != "") {
+                            $status = ($value == "active") ? STATUS_ACTIVE : STATUS_DELETE;
+                        }
+                        break;
+
+                    case 'tanggal':
+                        if ($value != "") {
+                            $date = parse_date_range($value);
+                            $conditions["cast(tc.ComplainCreatedDate as date) <="] = $date['end'];
+                            $conditions["cast(tc.ComplainCreatedDate as date) >="] = $date['start'];
+
+                        }
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+        }
+
+        //get data
+        $datas = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
+            'select'            => $select,
+            'joined'            => $joined,
+            'order_by'          => array($column_sort => $sort_dir),
+            'limit'             => $limit,
+            'start'             => $start,
+            'conditions'        => $conditions,
+            'filter'            => $data_filters,
+            "count_all_first"   => true,
+            'debug'             => false
+        ));
+
+        //get total rows
+        $total_rows = $datas['total'];
+
+        $output = array(
+            "data" => $datas['datas'],
+            "draw" => intval($this->input->get("draw")),
+            "recordsTotal" => $total_rows,
+            "recordsFiltered" => $total_rows,
+        );
+
+        //encoding and returning.
+        $this->output->set_content_type('application/json');
+        echo json_encode($output);
+        exit;
+    }
+
+    public function list_all_umum() {
+        //must ajax and must get.
+        if (!$this->input->is_ajax_request() || $this->input->method(true) != "GET") {
+            exit('No direct script access allowed');
+        }
+
+        //load model
+        $this->load->model('Dynamic_model');
+
+        //sanitize and get inputed data
+        $sort_col = sanitize_str_input($this->input->get("order")['0']['column'], "numeric");
+        $sort_dir = sanitize_str_input($this->input->get("order")['0']['dir']);
+        $limit = sanitize_str_input($this->input->get("length"), "numeric");
+        $start = sanitize_str_input($this->input->get("start"), "numeric");
+        $search = sanitize_str_input($this->input->get("search")['value']);
+        $filter = $this->input->get("filter");
+
+        $select = array(
+            'tc.ComplainId',
+            'tc.ComplainName',
+            'mm.MahasiswaName',
+            'mm.MahasiswaNim',
+            'mf.FakultasName',
+            'tut.type_name',
+            'tc.ComplainCreatedDate',
+            'IF(tc.ComplainIsState = 2,"READ","UNREAD") as status'
+        );
+
+        $joined = array(
+            "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
+            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
+        );
+
+        $column_sort = $select[$sort_col];
+
+        //initialize.
+        $data_filters = array();
+        $conditions = array("tc.ComplainToId" => BAGIAN_UMUM);
+        $status = STATUS_ACTIVE;
+
+        if (count ($filter) > 0) {
+            foreach ($filter as $key => $value) {
+                $value = sanitize_str_input($value);
+                switch ($key) {
+                    case 'name':
+                        if ($value != "") {
+                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                        }
+                        break;
+
+                    case 'nim':
+                        if ($value != "") {
+                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                        }
+                        break;
+
+                    case 'fakultas':
+                        if ($value != "") {
+                            $data_filters['lower(mf.FakultasName)'] = $value;
+                        }
+                        break;
+
+                    case 'bagian':
+                        if ($value != "") {
+                            $data_filters['lower(tut.type_name)'] = $value;
+                        }
+                        break;
+
+                    case 'status':
+                        if ($value != "") {
+                            $status = ($value == "active") ? STATUS_ACTIVE : STATUS_DELETE;
+                        }
+                        break;
+
+                    case 'tanggal':
+                        if ($value != "") {
+                            $date = parse_date_range($value);
+                            $conditions["cast(tc.ComplainCreatedDate as date) <="] = $date['end'];
+                            $conditions["cast(tc.ComplainCreatedDate as date) >="] = $date['start'];
+
+                        }
+                        break;
+                        
+                    default:
+                        break;
+                }
+            }
+        }
+
+        //get data
+        $datas = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
+            'select'            => $select,
+            'joined'            => $joined,
+            'order_by'          => array($column_sort => $sort_dir),
+            'limit'             => $limit,
+            'start'             => $start,
+            'conditions'        => $conditions,
+            'filter'            => $data_filters,
+            "count_all_first"   => true,
+            'debug'             => false
+        ));
+
+        //get total rows
+        $total_rows = $datas['total'];
+
+        $output = array(
+            "data" => $datas['datas'],
+            "draw" => intval($this->input->get("draw")),
+            "recordsTotal" => $total_rows,
+            "recordsFiltered" => $total_rows,
+        );
+
+        //encoding and returning.
+        $this->output->set_content_type('application/json');
+        echo json_encode($output);
+        exit;
+    }
+
     public function list_all_data_tracking() {
         //must ajax and must get.
         if (!$this->input->is_ajax_request() || $this->input->method(true) != "GET") {
@@ -687,6 +1279,65 @@ class Complaint extends MX_Controller {
             }
         }
 
+        //encoding and returning.
+        $this->output->set_content_type('application/json');
+        echo json_encode($message);
+        exit;
+    }
+
+    /**
+     * Delete an admin.
+     */
+    public function delete() {
+
+        //must ajax and must post.
+        if (!$this->input->is_ajax_request() || $this->input->method(true) != "POST") {
+            exit('No direct script access allowed');
+        }
+
+        //load the model.
+        $this->load->model('Dynamic_model');
+
+        //initial.
+        $message['is_error'] = true;
+        $message['redirect_to'] = "";
+        $message['error_msg'] = "";
+
+        //sanitize input (id is primary key).
+        $id = $this->input->post('id');
+
+        
+        //no data is found with that ID.
+        if (empty($id)) {
+            $message['error_msg'] = 'Invalid ID.';
+
+        } else {
+
+            //begin transaction
+            $this->db->trans_begin();
+
+            //delete the data (deactivate)
+            $condition = array("ComplainId" => $id);
+            $delete = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->delete($condition);
+
+            //end transaction.
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+
+                //failed.
+                $message['error_msg'] = 'database operation failed';
+            } else {
+                $this->db->trans_commit();
+                //success.
+                $message['is_error'] = false;
+                $message['error_msg'] = '';
+
+                //growler.
+                $message['notif_title'] = "Done!";
+                $message['notif_message'] = "Complain has been delete.";
+                $message['redirect_to'] = "";
+            }
+        }
         //encoding and returning.
         $this->output->set_content_type('application/json');
         echo json_encode($message);

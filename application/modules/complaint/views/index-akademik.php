@@ -20,7 +20,7 @@
 
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>Kemahasiswaan List</h2>
+						<h2>Akademik List</h2>
 					</header>
 
 					<!-- widget div-->

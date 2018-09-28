@@ -331,6 +331,64 @@ class Jurusan extends CI_Controller {
         echo json_encode($message);
         exit;
     }
+
+    /*
+     * Delete an admin.
+     */
+    public function delete() {
+
+        //must ajax and must post.
+        if (!$this->input->is_ajax_request() || $this->input->method(true) != "POST") {
+            exit('No direct script access allowed');
+        }
+
+        //load the model.
+        $this->load->model('Dynamic_model');
+
+        //initial.
+        $message['is_error'] = true;
+        $message['redirect_to'] = "";
+        $message['error_msg'] = "";
+
+        //sanitize input (id is primary key).
+        $id = $this->input->post('id');
+
+        //no data is found with that ID.
+        if (empty($id)) {
+            $message['error_msg'] = 'Invalid ID.';
+        } else {
+
+            //begin transaction
+            $this->db->trans_begin();
+
+            //delete the data (deactivate)
+            $condition = array("JurusanId" => $id);
+            $delete = $this->Dynamic_model->set_model("mst_jurusan","mj","JurusanId")->delete($condition);
+
+            //end transaction.
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+
+                //failed.
+                $message['error_msg'] = 'database operation failed';
+            } else {
+                $this->db->trans_commit();
+                //success.
+                $message['is_error'] = false;
+                $message['error_msg'] = '';
+
+                //growler.
+                $message['notif_title'] = "Done!";
+                $message['notif_message'] = "Jurusan has been delete.";
+                $message['redirect_to'] = "";
+            }
+        }
+
+        //encoding and returning.
+        $this->output->set_content_type('application/json');
+        echo json_encode($message);
+        exit;
+    }
 }
 
 /* End of file Jurusan.php */

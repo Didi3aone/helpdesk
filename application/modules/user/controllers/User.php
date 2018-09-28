@@ -723,7 +723,8 @@ class User extends MX_Controller  {
                 "user_name"         => $username,
                 "user_email"        => $email,
                 "user_type_id"      => $user_type,
-                "user_fakultas_id"  => $fak_id
+                "user_fakultas_id"  => $fak_id,
+                "user_role_id"      => $role
             );
 
             //insert or update?
@@ -974,7 +975,7 @@ class User extends MX_Controller  {
         if (!empty($id) && is_numeric($id)) {
 
             //check if admin id is the current login ?
-            if ($this->_currentUser['user_id'] == $id) {
+            if ($this->session->userdata('user_id') == $id) {
                 $message['error_msg'] = 'Cannot delete the Admin account you are currently logged in with.';
                 //encoding and returning.
                 $this->output->set_content_type('application/json');
@@ -1014,7 +1015,7 @@ class User extends MX_Controller  {
 
                 //delete the data (deactivate)
                 $condition = array("user_id" => $id);
-                $delete = $this->User_model->delete($condition);
+                $delete = $this->User_model->delete($condition,array("is_permanent" => true));
 
                 //end transaction.
                 if ($this->db->trans_status() === FALSE) {

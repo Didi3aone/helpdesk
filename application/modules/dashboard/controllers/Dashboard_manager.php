@@ -40,6 +40,31 @@ class Dashboard_manager extends MX_Controller  {
             )
         );
 
+        $data['akademik'] = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
+                "count_all_first" => true,
+                "conditions"      => array("tc.ComplainToId" => BAGIAN_AKADEMIK),
+            )
+        );
+
+        $data['sdm'] = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
+                "count_all_first" => true,
+                "conditions"      => array("tc.ComplainToId" => BAGIAN_SDM),
+            )
+        );
+
+        $data['alumni'] = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
+                "count_all_first" => true,
+                "conditions"      => array("tc.ComplainToId" => BAGIAN_ALUMNI),
+            )
+        );
+
+        $data['umum'] = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
+                "count_all_first" => true,
+                "conditions"      => array("tc.ComplainToId" => BAGIAN_UMUM),
+            )
+        );
+
+
         $header = array(
             "title"         => $this->_title,
             "title_page"    => $this->_title_page . '<span>> My Dashboard</span>',

@@ -1,13 +1,25 @@
 <script>
 	var lists = function () {
     var table_id = "#dataTable";
-    var ajax_source = "<?= site_url('jurusan/list-all-data') ?>";
-    var url = "<?= site_url('jurusan/'); ?>"
+    var ajax_source = "<?= site_url('complaint/list-all-akademik') ?>";
+    var url = "<?= site_url('complaint/'); ?>"
     var columns = [
-        {"data": "JurusanId" },
-        {"data": "JurusanCode" },
-        {"data": "JurusanName" },
-        {"data": "IsActive"},
+        {"data": "ComplainName" },
+        {"data": "MahasiswaName" },
+        {"data": "MahasiswaNim" },
+        {"data": "FakultasName" },
+        {"data": "type_name" },
+        {"data": "status" },
+        {
+            "data": "ComplainCreatedDate",
+            "render":function(data, type, full) {
+                if (data != null && data != "") {
+                    return moment(data).format("DD MMM YYYY HH:mm:ss");
+                }
+
+                return "";
+            }
+        },
         {
             "title": "Action",
             "class": "text-center",
@@ -15,9 +27,9 @@
             "sortable": false,
             "render": function(data, type, full) {
                 var edit =  '<td>';
-                    // edit +=  ' <a href="'+ url +'view/' + full.JurusanId + '" class="btn btn-info btn-circle" rel="tooltip" title="View Jurusan" data-placement="top" ><i class="fa fa-eye"></i></a>';
-                    edit +=  ' <a href="'+ url +'edit/' + full.JurusanId + '" class="btn btn-primary btn-circle" rel="tooltip" title="Edit Jurusan" data-placement="top" ><i class="fa fa-pencil"></i></a>';
-                    edit +=' <a href="'+ url +'delete" data-id ="' + full.JurusanId + '" data-name ="' + full.JurusanName + '" class="btn btn-danger btn-circle delete-confirm" rel="tooltip" title="Delete Jurusan" data-placement="top" ><i class="fa fa-trash-o"></i></a>';
+                    edit +=  ' <a href="'+ url +'view/' + full.ComplainId + '" class="btn btn-info btn-circle" rel="tooltip" title="View Complain" data-placement="top" ><i class="fa fa-eye"></i></a>';
+                    // edit +=  ' <a href="'+ url +'edit/' + full.ComplainId + '" class="btn btn-primary btn-circle" rel="tooltip" title="Edit user" data-placement="top" ><i class="fa fa-pencil"></i></a>';
+                    edit +=' <a href="'+ url +'delete" data-id ="' + full.ComplainId + '" data-name ="' + full.ComplainName + '" class="btn btn-danger btn-circle delete-confirm" rel="tooltip" title="Delete Complain" data-placement="top" ><i class="fa fa-trash-o"></i></a>';
                     edit +=  '</td>';
 
                 return edit;

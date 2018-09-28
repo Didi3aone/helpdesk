@@ -32,8 +32,12 @@
                			<label class="select">
 	               			<select name="bagian" id="bagian">
 	               				<option value="">-- choose --</option>
-	               				<option value="1">Bagian Keuangan</option>
-	               				<option value="2">Bagian Kemahasiswaan</option>
+	               				<?php
+                                    foreach ($bagian as $key => $value) { ?>
+                                        <option value="<?php echo $value['type_id'] ?>"><?= $value['type_name']; ?></option>
+                                        <?php
+                                    }
+                                ?>
 	               			</select>
                			</label>
                		</section>

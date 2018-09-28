@@ -16,7 +16,7 @@
             "sortable": false,
             "render": function(data, type, full) {
                 var edit =  '<td>';
-                    edit +=  ' <a href="'+ url +'view/' + full.user_id + '" class="btn btn-info btn-circle" rel="tooltip" title="View user" data-placement="top" ><i class="fa fa-eye"></i></a>';
+                    // edit +=  ' <a href="'+ url +'view/' + full.user_id + '" class="btn btn-info btn-circle" rel="tooltip" title="View user" data-placement="top" ><i class="fa fa-eye"></i></a>';
                     // edit +=  ' <a href="'+ url +'edit/' + full.user_id + '" class="btn btn-primary btn-circle" rel="tooltip" title="Edit user" data-placement="top" ><i class="fa fa-pencil"></i></a>';
                     edit +=' <a href="'+ url +' delete" data-id ="' + full.user_id + '" data-name ="' + full.user_full_name + '" class="btn btn-danger btn-circle delete-confirm" rel="tooltip" title="Delete user" data-placement="top" ><i class="fa fa-trash-o"></i></a>';
                     edit +=  '</td>';
