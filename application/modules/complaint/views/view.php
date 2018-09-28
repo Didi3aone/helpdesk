@@ -15,9 +15,17 @@
 
 					if( $redirect == "BAGIAN KEUANGAN") {
 						$string = "list-keuangan";
-					} else {
+					} elseif( $redirect == "BAGIAN KEMAHASISWAAN" ) {
 						$string = "list-kemahasiswaan";
-					}
+					} elseif( $redirect == "BAGIAN AKADEMIK") {
+                        $string = "list-akademik";
+                    } elseif( $redirect == "BAGIAN SDM") {
+                        $string = "list-sdm";
+                    } elseif($redirect == "BAGIAN ALUMNI") {
+                        $string = "list-alumni";
+                    } else {
+                        $string = "list-umum";
+                    }
 				?>
                 <a class="btn btn-warning back-button" href="<?= site_url("complaint/".$string) ?>" title="Back" rel="tooltip" data-placement="left">
 					<i class="fa fa-arrow-circle-left fa-lg"></i>
@@ -56,12 +64,19 @@
                                 </section>
 
                                 <!-- <div class="row"> -->
-                                    <section>
-                                        <label class="label">Isi</label>
-                                        <label class="input">
-                                            <textarea name="desc" class="" cols="176" rows="20" disabled="disabled"><?= $text; ?></textarea>
-                                        </label>
-                                    </section>
+                                <section>
+                                    <label class="label">Isi</label>
+                                    <label class="textare">
+                                        <textarea name="desc" class="" cols="176" rows="20" disabled="disabled"><?= $text; ?></textarea>
+                                    </label>
+                                </section>
+<!-- 
+                                <section>
+                                    <label class="label">Remark</label>
+                                    <label class="textare">
+                                        <textarea name="note"></textarea>
+                                    </label>
+                                </section> -->
                                 <!-- <div> -->
                             </fieldset>
                         </form>

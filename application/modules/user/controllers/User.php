@@ -57,7 +57,7 @@ class User extends MX_Controller  {
     /**
      * List Admin
      */
-    public function list() {
+    public function list_data() {
         //set header attribute.
         $header = array(
             "title"         => $this->_title,

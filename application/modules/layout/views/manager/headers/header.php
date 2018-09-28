@@ -170,7 +170,7 @@
 						<a href="#"><i class="fa fa-lg fa-fw fa-users"></i> <span class="menu-item-parent"> Mahasiswa</span></a>
                         <ul>
                             <li class="<?= (isset($active_page) && $active_page == 'mahasiswa-list') ? "active" : "" ?>">
-								<a href="<?= site_url('user/list'); ?>" title="List"><span class="menu-item-parent">List</span></a>
+								<a href="<?= site_url('user/list_data'); ?>" title="List"><span class="menu-item-parent">List</span></a>
 							</li>
 						</ul>
 					</li>
