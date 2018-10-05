@@ -1,5 +1,5 @@
 <script>
-	var lists = function () {
+    var lists = function () {
     var table_id = "#dataTable";
     var ajax_source = "<?= site_url('complaint/list-all-umum') ?>";
     var url = "<?= site_url('complaint/'); ?>"
@@ -10,6 +10,7 @@
         {"data": "FakultasName" },
         {"data": "type_name" },
         {"data": "status" },
+        {"data": "StatusName" },
         {
             "data": "ComplainCreatedDate",
             "render":function(data, type, full) {

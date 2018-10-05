@@ -10,6 +10,7 @@
         {"data": "FakultasName" },
         {"data": "type_name" },
         {"data": "status" },
+        {"data": "StatusName" },
         {
             "data": "ComplainCreatedDate",
             "render":function(data, type, full) {

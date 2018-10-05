@@ -65,6 +65,7 @@
                                             </div>
                                         </th>
                                         <th style="width:120px"></th>
+                                        <th style="width:120px"></th>
                                         <th style="width:150px" class="hasinput">
                                             <div class="form-group">
                                                 <div class="input-group">
@@ -82,6 +83,7 @@
                                         <th data-hide="phone,tablet"> Fakultas</th>
                                         <th data-hide="phone,tablet"> Bagian</th>
                                         <th data-hide="phone,tablet"> Status</th>
+                                        <th data-hide="phone,tablet"> Status Complain</th>
                                         <th data-hide="phone,tablet"> Tanggal</th>
                                         <th> Action</th>
                                     </tr>

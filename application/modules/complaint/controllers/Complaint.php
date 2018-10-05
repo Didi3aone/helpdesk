@@ -375,7 +375,8 @@ class Complaint extends MX_Controller {
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status'
+            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status',
+            'tsc.StatusName'
         );
 
         $joined = array(
@@ -383,6 +384,8 @@ class Complaint extends MX_Controller {
             "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
+
+        $left_joined = array("trs_status_complain tsc" => array("tsc.StatusId" => "tc.ComplainStatusId"));
 
         $column_sort = $select[$sort_col];
 
@@ -444,6 +447,7 @@ class Complaint extends MX_Controller {
         $datas = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
             'select'            => $select,
             'joined'            => $joined,
+            'left_joined'       => $left_joined,
             'order_by'          => array($column_sort => $sort_dir),
             'limit'             => $limit,
             'start'             => $start,
@@ -494,7 +498,8 @@ class Complaint extends MX_Controller {
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status'
+            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status',
+            'tsc.StatusName'
         );
 
         $joined = array(
@@ -502,6 +507,8 @@ class Complaint extends MX_Controller {
             "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
+
+        $left_joined = array("trs_status_complain tsc" => array("tsc.StatusId" => "tc.ComplainStatusId"));
 
         $column_sort = $select[$sort_col];
 
@@ -563,6 +570,7 @@ class Complaint extends MX_Controller {
         $datas = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
             'select'            => $select,
             'joined'            => $joined,
+            'left_joined'       => $left_joined,
             'order_by'          => array($column_sort => $sort_dir),
             'limit'             => $limit,
             'start'             => $start,
@@ -613,7 +621,8 @@ class Complaint extends MX_Controller {
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status'
+            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status',
+            'tsc.StatusName'
         );
 
         $joined = array(
@@ -621,6 +630,8 @@ class Complaint extends MX_Controller {
             "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
+
+        $left_joined = array("trs_status_complain tsc" => array("tsc.StatusId" => "tc.ComplainStatusId"));
 
         $column_sort = $select[$sort_col];
 
@@ -682,6 +693,7 @@ class Complaint extends MX_Controller {
         $datas = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
             'select'            => $select,
             'joined'            => $joined,
+            'left_joined'       => $left_joined,
             'order_by'          => array($column_sort => $sort_dir),
             'limit'             => $limit,
             'start'             => $start,
@@ -732,7 +744,8 @@ class Complaint extends MX_Controller {
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status'
+            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status',
+            'tsc.StatusName'
         );
 
         $joined = array(
@@ -741,6 +754,7 @@ class Complaint extends MX_Controller {
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
 
+        $left_joined = array("trs_status_complain tsc" => array("tsc.StatusId" => "tc.ComplainStatusId"));
         $column_sort = $select[$sort_col];
 
         //initialize.
@@ -801,6 +815,7 @@ class Complaint extends MX_Controller {
         $datas = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
             'select'            => $select,
             'joined'            => $joined,
+            'left_joined'       => $left_joined,
             'order_by'          => array($column_sort => $sort_dir),
             'limit'             => $limit,
             'start'             => $start,
@@ -851,7 +866,8 @@ class Complaint extends MX_Controller {
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status'
+            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status',
+            'tsc.StatusName'
         );
 
         $joined = array(
@@ -859,7 +875,7 @@ class Complaint extends MX_Controller {
             "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
-
+        $left_joined = array("trs_status_complain tsc" => array("tsc.StatusId" => "tc.ComplainStatusId"));
         $column_sort = $select[$sort_col];
 
         //initialize.
@@ -920,6 +936,7 @@ class Complaint extends MX_Controller {
         $datas = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
             'select'            => $select,
             'joined'            => $joined,
+            'left_joined'       => $left_joined,
             'order_by'          => array($column_sort => $sort_dir),
             'limit'             => $limit,
             'start'             => $start,
@@ -970,7 +987,8 @@ class Complaint extends MX_Controller {
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsRead == 1,"READ","UNREAD") as status'
+            'IF(tc.ComplainIsRead = 1,"READ","UNREAD") as status',
+            'tsc.StatusName'
         );
 
         $joined = array(
@@ -978,6 +996,8 @@ class Complaint extends MX_Controller {
             "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
+
+        $left_joined = array("trs_status_complain tsc" => array("tsc.StatusId" => "tc.ComplainStatusId"));
 
         $column_sort = $select[$sort_col];
 
@@ -1039,6 +1059,7 @@ class Complaint extends MX_Controller {
         $datas = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
             'select'            => $select,
             'joined'            => $joined,
+            'left_joined'       => $left_joined,
             'order_by'          => array($column_sort => $sort_dir),
             'limit'             => $limit,
             'start'             => $start,

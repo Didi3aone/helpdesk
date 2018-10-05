@@ -2,6 +2,7 @@
     $id        = isset($item["ComplainId"]) ? $item["ComplainId"] : "";
     $perihal   = isset($item["ComplainName"]) ? $item["ComplainName"] : "";
     $text      = isset($item["ComplainDesc"]) ? $item["ComplainDesc"] : "";
+    $note      = isset($item['ComplainRemark']) ? $item['ComplainRemark'] : "";
 ?>
 <!-- MAIN CONTENT -->
 <div id="content">
@@ -98,7 +99,7 @@
                                 <section>
                                     <label class="label">Note</label>
                                     <label class="textarea">
-                                        <textarea name="note" rows="30"></textarea>
+                                        <textarea name="note" rows="30"><?= $note; ?></textarea>
                                     </label>
                                 </section>
                             </fieldset>
