@@ -1,4 +1,5 @@
 <?php
+    $id        = isset($item["ComplainId"]) ? $item["ComplainId"] : "";
     $perihal   = isset($item["ComplainName"]) ? $item["ComplainName"] : "";
     $text      = isset($item["ComplainDesc"]) ? $item["ComplainDesc"] : "";
 ?>
@@ -30,6 +31,9 @@
                 <a class="btn btn-warning back-button" href="<?= site_url("complaint/".$string) ?>" title="Back" rel="tooltip" data-placement="left">
 					<i class="fa fa-arrow-circle-left fa-lg"></i>
 				</a>
+                <button class="btn btn-primary submit-form" data-form-target="user-form" title="Simpan" rel="tooltip" data-placement="top" >
+                    <i class="fa fa-floppy-o fa-lg"></i>
+                </button>
 			</h1>
 		</div>
 	</div>
@@ -54,7 +58,10 @@
                     <!-- widget div-->
                     <div>
 
-                        <form class="smart-form" id="admin-form" method="post">
+                       <form class="smart-form" id="user-form" action="<?= site_url('complaint/update_complain'); ?>" method="post">
+                            <?php if($id != 0): ?>
+                                <input type="hidden" name="id" value="<?= $id ?>" />
+                            <?php endif; ?>
                             <fieldset>
                                 <section>
                                     <label class="label">Perihal</label>
@@ -70,14 +77,30 @@
                                         <textarea name="desc" class="" cols="176" rows="20" disabled="disabled"><?= $text; ?></textarea>
                                     </label>
                                 </section>
-<!-- 
+
                                 <section>
-                                    <label class="label">Remark</label>
-                                    <label class="textare">
-                                        <textarea name="note"></textarea>
+                                    <label class="label"> Update Status Complain <sup class="color-red">*</sup></label>
+                                    <label class="select">
+                                        <select name="StatusId">
+                                            <option value="">-- choose --</option>
+                                            <?php 
+                                                foreach($status as $key => $value) {
+                                                    echo "
+                                                    <option value=".$value['StatusId']."> 
+                                                        ".$value['StatusName'].
+                                                    "</option>";                                                 
+                                                }
+                                            ?>
+                                        </select>
                                     </label>
-                                </section> -->
-                                <!-- <div> -->
+                                </section>
+
+                                <section>
+                                    <label class="label">Note</label>
+                                    <label class="textarea">
+                                        <textarea name="note" rows="30"></textarea>
+                                    </label>
+                                </section>
                             </fieldset>
                         </form>
                     </div>

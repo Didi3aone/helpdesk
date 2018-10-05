@@ -72,9 +72,12 @@ class Complaint extends MX_Controller {
         $condition = array("ComplainId" => $id);
         $result = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->update(
             array(
-            "ComplainIsState" => STATUS_READ_COMPLAIN,
+            "ComplainIsRead" => STATUS_READ_COMPLAIN,
             ),$condition
         );
+
+        // pr($result);exit;
+        $data['status'] = $this->Dynamic_model->set_model('trs_status_complain','tsc','StatusId')->get_all_data(array("conditions" => array("tsc.StatusId NOT IN(1) " => null)))['datas'];
 
         //prepare header title.
         $header = array(
@@ -85,7 +88,13 @@ class Complaint extends MX_Controller {
             "back"          => $this->_back,
         );
 
-        $footer = array();
+        $footer = array(
+            "script"      => array(
+                "assets/js/plugins/tinymce/tinymce.min.js",
+                // "assets/js/plugin/summernote/summernote.min.js"
+            ),
+            "view_js_nav" => $this->_view_folder_js . "update_js"
+        );
 
         //load the view.
         $this->load->view(MANAGER_HEADER, $header);
@@ -366,7 +375,7 @@ class Complaint extends MX_Controller {
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsState = 2,"READ","UNREAD") as status'
+            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status'
         );
 
         $joined = array(
@@ -485,7 +494,7 @@ class Complaint extends MX_Controller {
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsState = 2,"READ","UNREAD") as status'
+            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status'
         );
 
         $joined = array(
@@ -604,7 +613,7 @@ class Complaint extends MX_Controller {
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsState = 2,"READ","UNREAD") as status'
+            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status'
         );
 
         $joined = array(
@@ -723,7 +732,7 @@ class Complaint extends MX_Controller {
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsState = 2,"READ","UNREAD") as status'
+            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status'
         );
 
         $joined = array(
@@ -842,7 +851,7 @@ class Complaint extends MX_Controller {
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsState = 2,"READ","UNREAD") as status'
+            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status'
         );
 
         $joined = array(
@@ -961,7 +970,7 @@ class Complaint extends MX_Controller {
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsState = 2,"READ","UNREAD") as status'
+            'IF(tc.ComplainIsRead == 1,"READ","UNREAD") as status'
         );
 
         $joined = array(
@@ -1075,12 +1084,9 @@ class Complaint extends MX_Controller {
         $select = array(
             'tc.ComplainId',
             'tc.ComplainName',
-            // 'mm.MahasiswaName',
-            // 'mm.MahasiswaNim',
-            // 'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
-            'IF(tc.ComplainIsState = 2,"DONE","SENDING") as status'
+            'tsc.StatusName as status'
         );
 
         $joined = array(
@@ -1088,6 +1094,8 @@ class Complaint extends MX_Controller {
             "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
+
+        $left_joined = array("trs_status_complain tsc" => array("tsc.StatusId" => "tc.ComplainStatusId"));
 
         $column_sort = $select[$sort_col];
 
@@ -1149,6 +1157,7 @@ class Complaint extends MX_Controller {
         //get data
         $datas = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
             'select'            => $select,
+            'left_joined'       => $left_joined,
             'joined'            => $joined,
             'order_by'          => array($column_sort => $sort_dir),
             'limit'             => $limit,
@@ -1198,6 +1207,8 @@ class Complaint extends MX_Controller {
         $fak_id         = $this->input->post('fakultas_id');
         $to_id          = $this->input->post('to_id');
         $desc           = $this->input->post('desc');
+        $note           = $this->input->post('note');
+        $StatusId       = $this->input->post('StatusId');
         $now            = date('Y-m-d H:i:s');
         $mahasiswa      = $this->session->userdata('id_mhs');
 
@@ -1229,8 +1240,9 @@ class Complaint extends MX_Controller {
             if ($id == "") {
                 //insert to DB.
 				// pr($this->input->post());exit;
-                $_save_data['ComplainCreatedDate'] = $now;
-                $_save_data["ComplainIsState"]     = STATUS_SEND_COMPLAIN;
+                $_save_data['ComplainCreatedDate']  = $now;
+                $_save_data["ComplainStatusId"]     = STATUS_SEND_COMPLAIN;
+                $_save_data["ComplainRemark"]       = $note;
                 $result = $this->_dm->set_model("tbl_complain","tc","ComplainId")->insert($_save_data);
 
                 //end transaction.
@@ -1250,13 +1262,15 @@ class Complaint extends MX_Controller {
                     $message['redirect_to'] 	= "";
                 }
             } else {
+                // pr($this->input->post());exit;
                 //update.
-                if ($new_password != "") {
-                    $arrayToDB['password'] = $new_password;
-                }
+                $_save_data['ComplainUpdatedDate']  = $now;
+                $_save_data["ComplainStatusId"]     = $StatusId;
+                $_save_data["ComplainRemark"]       = $note;
+
                 //condition for update.
-                $condition = array("admin_id" => $id);
-                $result = $this->Admin_model->update($arrayToDB, $condition);
+                $condition = array("ComplainId" => $id);
+                $result = $this->_dm->set_model("tbl_complain","tc","ComplainId")->update($arrayToDB, $condition);
 
                 //end transaction.
                 if ($this->db->trans_status() === FALSE) {
@@ -1271,10 +1285,10 @@ class Complaint extends MX_Controller {
                     //success.
                     //growler.
                     $message['notif_title'] = "Excellent!";
-                    $message['notif_message'] = "Admin has been updated.";
+                    $message['notif_message'] = "Complain has been updated.";
 
                     //on update, redirect.
-                    $message['redirect_to'] = "/admin";
+                    $message['redirect_to'] = "";
                 }
             }
         }
@@ -1283,6 +1297,84 @@ class Complaint extends MX_Controller {
         $this->output->set_content_type('application/json');
         echo json_encode($message);
         exit;
+    }
+
+    public function update_complain()
+    {
+        //must ajax and must post.
+        if (!$this->input->is_ajax_request() || $this->input->method(true) != "POST") {
+            exit('No direct script access allowed');
+        }
+
+        //load form validation lib.
+        $this->load->library('form_validation');
+
+        //initial.
+        $message['is_error'] = true;
+        $message['error_msg'] = "";
+        $message['redirect_to'] = "";
+        
+        //sanitize input (id is primary key, if from edit, it has value).
+        $id             = $this->input->post('id');
+        $title          = $this->input->post('title');
+        $fak_id         = $this->input->post('fakultas_id');
+        $to_id          = $this->input->post('to_id');
+        $desc           = $this->input->post('desc');
+        $note           = $this->input->post('note');
+        $StatusId       = $this->input->post('StatusId');
+        $now            = date('Y-m-d H:i:s');
+        $mahasiswa      = $this->session->userdata('id_mhs');
+
+
+        //server side validation.
+        $this->form_validation->set_rules('note','Note','required');
+        $this->form_validation->set_rules('StatusId','Status','required');
+
+        //checking.
+        if ($this->form_validation->run() == FALSE) {
+
+            //validation failed.
+            $message['error_msg'] = validation_errors();
+
+        } else {
+            $_save_data['ComplainUpdatedDate']  = $now;
+            $_save_data["ComplainStatusId"]     = $StatusId;
+            $_save_data["ComplainRemark"]       = $note;
+
+            $condition = array("ComplainId" => $id);
+            
+            $result = $this->_dm->set_model("tbl_complain","tc","ComplainId")->update($_save_data, $condition);
+
+            if( $result )
+            {
+                //end transaction.
+                if ($this->db->trans_status() === FALSE) {
+                    $this->db->trans_rollback();
+                    $message['error_msg'] = 'database operation failed.';
+
+                } else {
+                    $this->db->trans_commit();
+
+                    $message['is_error'] = false;
+
+                    //success.
+                    //growler.
+                    $message['notif_title'] = "Excellent!";
+                    $message['notif_message'] = "Complain has been updated.";
+
+                    //on update, redirect.
+                    $message['redirect_to'] = "";
+                }
+            }
+
+            // $message['error_msg'] = 'Invalid ID.';
+        }
+
+        //encoding and returning.
+        $this->output->set_content_type('application/json');
+        echo json_encode($message);
+        exit;
+
     }
 
     /**

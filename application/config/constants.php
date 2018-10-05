@@ -152,7 +152,9 @@ define("MANAGER_FOOTER_MAHASISWA", 'layout/mahasiswa/footers/footer');
 define("API_KEY_GOOGLE_JS", 'AIzaSyDLPhhxzjGhof2mSVNxumwwsDgd-W-9sjc');
 
 define("STATUS_SEND_COMPLAIN", 1);
-define("STATUS_READ_COMPLAIN", 2);
+define("STATUS_READ_COMPLAIN", 1);
+define("STATUS_ON_PROCCESS", 2);
+define("STATUS_IS_DONE", 3);
 define("BAGIAN_KEUANGAN", 1);
 define("BAGIAN_KEMAHASISWAAN", 2);
 define("BAGIAN_AKADEMIK", 3);
