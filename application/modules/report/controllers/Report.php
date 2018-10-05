@@ -79,23 +79,23 @@ class Report extends CI_Controller {
 
 		if( $bagian == 1 ) {
 			$name = ($bagian == 1) ? "Rpt_Keuangan" : "";
-			header('Content-Type: application/force-download');
-			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xlsx');
+			header("Content-Type: application/vnd.ms-excel");
+			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xls');
 			// Fix for crappy IE bug in download.
 			header("Pragma: ");
 			header("Cache-Control: ");
 			$this->load->view($this->_view_folder.'show_report_keuangan',$data);
 		} elseif($bagian == 2 ) {
 			$name = ($bagian == 2) ? "Rpt_Kemahasiswaan" : "";
-			header('Content-Type: application/force-download');
-			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xlsx');
+			header("Content-Type: application/vnd.ms-excel");
+			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xls');
 			// Fix for crappy IE bug in download.
 			header("Pragma: ");
 			header("Cache-Control: ");
 			$this->load->view($this->_view_folder.'show_report_kemahasiswaan',$data);
 		} elseif( $bagian == 3 ) {
 			$name = ($bagian == 3) ? "Rpt_Akademik" : "";
-			header('Content-Type: application/force-download');
+			header("Content-Type: application/vnd.ms-excel");
 			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xls');
 			// Fix for crappy IE bug in download.
 			header("Pragma: ");
@@ -103,7 +103,7 @@ class Report extends CI_Controller {
 			$this->load->view($this->_view_folder.'show_report_akademik',$data);
 		} elseif($bagian == 4) {
 			$name = ($bagian == 4) ? "Rpt_Sdm" : "";
-			header('Content-Type: application/force-download');
+			header("Content-Type: application/vnd.ms-excel");
 			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xls');
 			// Fix for crappy IE bug in download.
 			header("Pragma: ");
@@ -111,7 +111,7 @@ class Report extends CI_Controller {
 			$this->load->view($this->_view_folder.'show_report_sdm',$data);
 		} elseif( $bagian == 5) {
 			$name = ($bagian == 5) ? "Rpt_Alumni" : "";
-			header('Content-Type: application/force-download');
+			header("Content-Type: application/vnd.ms-excel");
 			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xls');
 			// Fix for crappy IE bug in download.
 			header("Pragma: ");
@@ -119,7 +119,7 @@ class Report extends CI_Controller {
 			$this->load->view($this->_view_folder.'show_report_alumni',$data);
 		} else {
 			$name = ($bagian == 6) ? "Rpt_Kemahasiswaan" : "";
-			header('Content-Type: application/force-download');
+			header("Content-Type: application/vnd.ms-excel");
 			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xls');
 			// Fix for crappy IE bug in download.
 			header("Pragma: ");
