@@ -74,8 +74,8 @@
                                 <!-- <div class="row"> -->
                                 <section>
                                     <label class="label">Isi</label>
-                                    <label class="textare">
-                                        <textarea name="desc" class="" cols="176" rows="20" disabled="disabled"><?= $text; ?></textarea>
+                                    <label class="textarea">
+                                        <textarea name="desc" class="" cols="176" rows="10" disabled="disabled"><?= $text; ?></textarea>
                                     </label>
                                 </section>
 
