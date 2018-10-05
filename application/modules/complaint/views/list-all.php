@@ -20,7 +20,7 @@
 
 					<header>
 						<span class="widget-icon"> <i class="fa fa-table"></i> </span>
-						<h2>User List</h2>
+						<h2>Umum List</h2>
 					</header>
 
 					<!-- widget div-->
@@ -32,31 +32,31 @@
                                     <tr>
                                         <th class="hasinput" style="width:40px">
                                         </th>
-                                        <!-- <th class="hasinput">
+                                        <th class="hasinput">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <input type="text" id="name_filter" name="filter[name]" class="form-control filter-this" placeholder="Nama Mahasiswa" />
                                                     <div class="input-group-btn"><button type="button" class="clear-filter btn"><i class="fa fa-close"></i></button></div>
                                                 </div>
                                             </div>
-                                        </th> -->
-                                        <!-- <th class="hasinput">
+                                        </th>
+                                        <th class="hasinput">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <input type="text" id="username_filter" name="filter[nim]" class="form-control filter-this" placeholder="NIM" />
                                                     <div class="input-group-btn"><button type="button" class="clear-filter btn"><i class="fa fa-close"></i></button></div>
                                                 </div>
                                             </div>
-                                        </th> -->
-                                      <!--   <th class="hasinput">
+                                        </th>
+                                        <th class="hasinput">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <input type="text" id="email_filter" name="filter[fakultas]" class="form-control filter-this" placeholder="Fakultas" />
                                                     <div class="input-group-btn"><button type="button" class="clear-filter btn"><i class="fa fa-close"></i></button></div>
                                                 </div>
                                             </div>
-                                        </th> -->
-                                        <th class="hasinput" style="width:40px">
+                                        </th>
+                                        <th class="hasinput">
                                             <div class="form-group">
                                                 <div class="input-group">
                                                     <input type="text" id="email_filter" name="filter[bagian]" class="form-control filter-this" placeholder="Bagian" />
@@ -64,6 +64,7 @@
                                                 </div>
                                             </div>
                                         </th>
+                                        <th style="width:120px"></th>
                                         <th style="width:120px"></th>
                                         <th style="width:150px" class="hasinput">
                                             <div class="form-group">
@@ -77,11 +78,12 @@
                                     </tr>
                                     <tr>
                                         <th data-hide="phone,tablet">Perihal</th>
-                                        <!-- <th data-class="expand"> Mahasiswa</th> -->
-                                        <!-- <th data-hide="phone,tablet"> NIM</th> -->
-                                        <!-- <th data-hide="phone,tablet"> Fakultas</th> -->
+                                        <th data-class="expand"> Mahasiswa</th>
+                                        <th data-hide="phone,tablet"> NIM</th>
+                                        <th data-hide="phone,tablet"> Fakultas</th>
                                         <th data-hide="phone,tablet"> Bagian</th>
                                         <th data-hide="phone,tablet"> Status</th>
+                                        <th data-hide="phone,tablet"> Status Complain</th>
                                         <th data-hide="phone,tablet"> Tanggal</th>
                                         <th> Action</th>
                                     </tr>

@@ -103,6 +103,71 @@ class Complaint extends MX_Controller {
     }
 
     /**
+     * view an admin
+     */
+    public function view_status ($id = null) {
+        $this->_breadcrumb .= '<li><a href="">Complain</a></li>';
+
+        //load the model.
+        $this->load->model('Dynamic_model');
+        $data['item'] = null;
+
+        $params = array("row_array" => true,"conditions" => array("ComplainId" => $id));
+        //get the data.
+        $data['item'] = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data($params)['datas'];
+
+        $condition = array("ComplainId" => $id);
+
+        // pr($result);exit;
+        $data['status'] = $this->Dynamic_model->set_model('trs_status_complain','tsc','StatusId')->get_all_data(array("conditions" => array("tsc.StatusId NOT IN(1) " => null)))['datas'];
+
+        //prepare header title.
+        $header = array(
+            "title"         => $this->_title,
+            "title_page"    => $this->_title_page . '<span>> View Complain</span>',
+            "active_page"   => $this->_active_page,
+            "breadcrumb"    => $this->_breadcrumb . '<li>View Complain</li>',
+            "back"          => $this->_back,
+        );
+
+        $footer = array();
+
+        //load the view.
+        $this->load->view(MANAGER_HEADER_MAHASISWA, $header);
+        $this->load->view($this->_view_folder . 'view-status', $data);
+        $this->load->view(MANAGER_FOOTER_MAHASISWA, $footer);
+    }
+
+    /**
+    * list complaint
+    */
+    public function list_all_complain()
+    {
+        //set header attribute.
+        $header = array(
+            "title"         => $this->_title,
+            "title_page"    => $this->_title_page . '<span>> List Complain keuangan</span>',
+            "active_page"   => "list-keuangan",
+            "breadcrumb"    => $this->_breadcrumb . '<li>Complain Keuangan</li>',
+        );
+
+        //set footer attribute (additional script and css).
+        $footer = array(
+            "script" => array(
+                "assets/js/plugins/datatables/jquery.dataTables.min.js",
+                "assets/js/plugins/datatables/dataTables.bootstrap.min.js",
+                "assets/js/plugins/datatable-responsive/datatables.responsive.min.js",
+            ),
+            "view_js_nav" => $this->_view_folder_js ."list_all_js"
+        );
+
+        //load the views.
+        $this->load->view(MANAGER_HEADER , $header);
+        $this->load->view($this->_view_folder . 'list-all');
+        $this->load->view(MANAGER_FOOTER , $footer);
+    }
+
+    /**
     * list complaint
     */
     public function list_keuangan()
@@ -348,6 +413,132 @@ class Complaint extends MX_Controller {
     }
 
      /**
+     * Function to get list_all_data admin
+     */
+    public function list_all_data_root() {
+        //must ajax and must get.
+        if (!$this->input->is_ajax_request() || $this->input->method(true) != "GET") {
+            exit('No direct script access allowed');
+        }
+
+        //load model
+        $this->load->model('Dynamic_model');
+
+        //sanitize and get inputed data
+        $sort_col = sanitize_str_input($this->input->get("order")['0']['column'], "numeric");
+        $sort_dir = sanitize_str_input($this->input->get("order")['0']['dir']);
+        $limit = sanitize_str_input($this->input->get("length"), "numeric");
+        $start = sanitize_str_input($this->input->get("start"), "numeric");
+        $search = sanitize_str_input($this->input->get("search")['value']);
+        $filter = $this->input->get("filter");
+
+        $select = array(
+            'tc.ComplainId',
+            'tc.ComplainName',
+            'mm.MahasiswaName',
+            'mm.MahasiswaNim',
+            'mf.FakultasName',
+            'tut.type_name',
+            'tc.ComplainCreatedDate',
+            'IF(tc.ComplainIsRead =1,"READ","UNREAD") as status',
+            'tsc.StatusName'
+        );
+
+        $joined = array(
+            "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
+            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
+        );
+
+        $left_joined = array("trs_status_complain tsc" => array("tsc.StatusId" => "tc.ComplainStatusId"));
+
+        $column_sort = $select[$sort_col];
+
+        //initialize.
+        $data_filters = array();
+        $conditions = array();
+        $status = STATUS_ACTIVE;
+
+        if (count ($filter) > 0) {
+            foreach ($filter as $key => $value) {
+                $value = sanitize_str_input($value);
+                switch ($key) {
+                    case 'name':
+                        if ($value != "") {
+                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                        }
+                        break;
+
+                    case 'nim':
+                        if ($value != "") {
+                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                        }
+                        break;
+
+                    case 'fakultas':
+                        if ($value != "") {
+                            $data_filters['lower(mf.FakultasName)'] = $value;
+                        }
+                        break;
+
+                    case 'bagian':
+                        if ($value != "") {
+                            $data_filters['lower(tut.type_name)'] = $value;
+                        }
+                        break;
+
+                    case 'status':
+                        if ($value != "") {
+                            $status = ($value == "active") ? STATUS_ACTIVE : STATUS_DELETE;
+                        }
+                        break;
+
+                    case 'tanggal':
+                        if ($value != "") {
+                            $date = parse_date_range($value);
+                            $conditions["cast(tc.ComplainCreatedDate as date) <="] = $date['end'];
+                            $conditions["cast(tc.ComplainCreatedDate as date) >="] = $date['start'];
+
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        //get data
+        $datas = $this->Dynamic_model->set_model("tbl_complain","tc","ComplainId")->get_all_data(array(
+            'select'            => $select,
+            'joined'            => $joined,
+            'left_joined'       => $left_joined,
+            'order_by'          => array($column_sort => $sort_dir),
+            'limit'             => $limit,
+            'start'             => $start,
+            'conditions'        => $conditions,
+            'filter'            => $data_filters,
+            "count_all_first"   => true,
+            'debug'             => false
+        ));
+
+        //get total rows
+        $total_rows = $datas['total'];
+
+        $output = array(
+            "data" => $datas['datas'],
+            "draw" => intval($this->input->get("draw")),
+            "recordsTotal" => $total_rows,
+            "recordsFiltered" => $total_rows,
+        );
+
+        //encoding and returning.
+        $this->output->set_content_type('application/json');
+        echo json_encode($output);
+        exit;
+    }
+
+    /**
      * Function to get list_all_data admin
      */
     public function list_all_data() {
