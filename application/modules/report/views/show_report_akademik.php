@@ -6,7 +6,7 @@
 </head>
 <body>
 	<table class="table table-striped">
-		<caption>Report Complain Bagian Kemahasiswaan</caption>
+		<caption>Report Complain Bagian Akademik</caption>
 		<thead>
 			<tr>
 				<th>No</th>
@@ -19,7 +19,7 @@
 		<tbody>
 			<?php 
 			    $no = 1;
-                foreach($keuangan->result_array() as $key => $val ) :
+                foreach($akademik->result_array() as $key => $val ) :
                 	// var_dump($keuangan);exit;
 			?>
 			<tr>

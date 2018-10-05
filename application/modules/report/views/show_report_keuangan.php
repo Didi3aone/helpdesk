@@ -26,7 +26,7 @@
 			?>
 			<tr>
 				<td><?= $no++ ?></td>
-				<td><?= $val['ComplainCreatedDate']; ?></td>
+				<td><?= $val['ComplainUpdatedDate']; ?></td>
 				<td><?= $val['MahasiswaName']; ?></td>
 				<td><?= $val['MahasiswaNim']; ?></td>
 				<td><?= $val['FakultasDesc']; ?></td>

@@ -19,7 +19,7 @@
 		<tbody>
 			<?php 
 			    $no = 1;
-                foreach($keuangan->result_array() as $key => $val ) :
+                foreach($umum->result_array() as $key => $val ) :
                 	// var_dump($keuangan);exit;
 			?>
 			<tr>

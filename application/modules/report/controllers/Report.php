@@ -42,11 +42,24 @@ class Report extends CI_Controller {
 
 		$data['keuangan'] = $this->_get_data_keuangan($start, $end, $bagian);
 		$data['kemahasiswaan'] = $this->_get_data_kemahasiswaan($start, $end, $bagian);
+		$data['akademik'] = $this->_get_data_akademik($start, $end, $bagian);
+		$data['alumni'] = $this->_get_data_alumni($start, $end, $bagian);
+		$data['umum'] = $this->_get_data_umum($start, $end, $bagian);
+		$data['sdm'] = $this->_get_data_sdm($start, $end, $bagian);
+		// $data['sdm'] = $this->_get_data_sdm($start, $end, $bagian);
 
 		if( $bagian == 1 ) {
 			$this->load->view($this->_view_folder.'show_report_keuangan',$data);
-		} else {
+		} elseif( $bagian == 2 ) {
 			$this->load->view($this->_view_folder.'show_report_kemahasiswaan',$data);
+		} elseif($bagian == 3) {
+			$this->load->view($this->_view_folder.'show_report_akademik',$data);
+		} elseif($bagian == 4) {
+			$this->load->view($this->_view_folder.'show_report_sdm',$data);
+		} elseif($bagian == 5) {
+			$this->load->view($this->_view_folder.'show_report_alumni',$data);
+		} else {
+			$this->load->view($this->_view_folder.'show_report_umum',$data);
 		}
 
 	}
@@ -59,6 +72,10 @@ class Report extends CI_Controller {
 
 		$data['keuangan'] = $this->_get_data_keuangan($start, $end, $bagian);
 		$data['kemahasiswaan'] = $this->_get_data_kemahasiswaan($start, $end, $bagian);
+		$data['akademik'] = $this->_get_data_akademik($start, $end, $bagian);
+		$data['alumni'] = $this->_get_data_alumni($start, $end, $bagian);
+		$data['umum'] = $this->_get_data_umum($start, $end, $bagian);
+		$data['sdm'] = $this->_get_data_sdm($start, $end, $bagian);
 
 		if( $bagian == 1 ) {
 			$name = ($bagian == 1) ? "Rpt_Keuangan" : "";
@@ -68,7 +85,7 @@ class Report extends CI_Controller {
 			header("Pragma: ");
 			header("Cache-Control: ");
 			$this->load->view($this->_view_folder.'show_report_keuangan',$data);
-		} else {
+		} elseif($bagian == 2 ) {
 			$name = ($bagian == 2) ? "Rpt_Kemahasiswaan" : "";
 			header('Content-Type: application/force-download');
 			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xlsx');
@@ -76,6 +93,38 @@ class Report extends CI_Controller {
 			header("Pragma: ");
 			header("Cache-Control: ");
 			$this->load->view($this->_view_folder.'show_report_kemahasiswaan',$data);
+		} elseif( $bagian == 3 ) {
+			$name = ($bagian == 3) ? "Rpt_Akademik" : "";
+			header('Content-Type: application/force-download');
+			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xls');
+			// Fix for crappy IE bug in download.
+			header("Pragma: ");
+			header("Cache-Control: ");
+			$this->load->view($this->_view_folder.'show_report_akademik',$data);
+		} elseif($bagian == 4) {
+			$name = ($bagian == 4) ? "Rpt_Sdm" : "";
+			header('Content-Type: application/force-download');
+			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xls');
+			// Fix for crappy IE bug in download.
+			header("Pragma: ");
+			header("Cache-Control: ");
+			$this->load->view($this->_view_folder.'show_report_sdm',$data);
+		} elseif( $bagian == 5) {
+			$name = ($bagian == 5) ? "Rpt_Alumni" : "";
+			header('Content-Type: application/force-download');
+			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xls');
+			// Fix for crappy IE bug in download.
+			header("Pragma: ");
+			header("Cache-Control: ");
+			$this->load->view($this->_view_folder.'show_report_alumni',$data);
+		} else {
+			$name = ($bagian == 6) ? "Rpt_Kemahasiswaan" : "";
+			header('Content-Type: application/force-download');
+			header('Content-disposition: attachment; filename="'.$name.date('Ymd').'".xls');
+			// Fix for crappy IE bug in download.
+			header("Pragma: ");
+			header("Cache-Control: ");
+			$this->load->view($this->_view_folder.'show_report_umum',$data);
 		}
 
 	}
@@ -88,7 +137,7 @@ class Report extends CI_Controller {
 			JOIN mst_fakultas mf ON mf.FakultasId = tc.ComplainFakultasId
 			JOIN mst_mahasiswa mm ON mm.MahasiswaId = tc.ComplainMahasiswaId
 			WHERE 
-				DATE(tc.ComplainCreatedDate) >= '$start' AND DATE(tc.ComplainCreatedDate) <= '$end'
+				DATE(tc.ComplainUpdatedDate) >= '$start' AND DATE(tc.ComplainUpdatedDate) <= '$end'
 				AND tc.ComplainToId='$bag'
 			ORDER BY tc.ComplainId DESC";
 		$query = $this->db->query($sql);
@@ -104,9 +153,76 @@ class Report extends CI_Controller {
 			JOIN mst_fakultas mf ON mf.FakultasId = tc.ComplainFakultasId
 			JOIN mst_mahasiswa mm ON mm.MahasiswaId = tc.ComplainMahasiswaId
 			WHERE 
-				DATE(tc.ComplainCreatedDate) >= '$start' AND DATE(tc.ComplainCreatedDate) <= '$end'
+				DATE(tc.ComplainUpdatedDate) >= '$start' AND DATE(tc.ComplainUpdatedDate) <= '$end'
 				AND tc.ComplainToId= '$bag'
 			ORDER BY tc.ComplainId DESC";
+		$query = $this->db->query($sql);
+		// echo $query;
+		return $query;
+	}
+
+	function _get_data_akademik($start, $end, $bag)
+	{
+		$sql = "
+			SELECT tc.* ,mf.*,mm.*
+			FROM tbl_complain tc
+			JOIN mst_fakultas mf ON mf.FakultasId = tc.ComplainFakultasId
+			JOIN mst_mahasiswa mm ON mm.MahasiswaId = tc.ComplainMahasiswaId
+			WHERE 
+				DATE(tc.ComplainUpdatedDate) >= '$start' AND DATE(tc.ComplainUpdatedDate) <= '$end'
+				AND tc.ComplainToId= '$bag'
+			ORDER BY tc.ComplainId DESC";
+		$query = $this->db->query($sql);
+		// echo $query;
+		return $query;
+	}
+
+	function _get_data_umum($start, $end, $bag)
+	{
+		$sql = "
+			SELECT tc.* ,mf.*,mm.*
+			FROM tbl_complain tc
+			JOIN mst_fakultas mf ON mf.FakultasId = tc.ComplainFakultasId
+			JOIN mst_mahasiswa mm ON mm.MahasiswaId = tc.ComplainMahasiswaId
+			WHERE 
+				DATE(tc.ComplainUpdatedDate) >= '$start' AND DATE(tc.ComplainUpdatedDate) <= '$end'
+				AND tc.ComplainToId= '$bag'
+			ORDER BY tc.ComplainId DESC";
+		$query = $this->db->query($sql);
+		// echo $query;
+		return $query;
+	}
+
+	function _get_data_alumni($start, $end, $bag)
+	{
+		$sql = "
+			SELECT tc.* ,mf.*,mm.*
+			FROM tbl_complain tc
+			JOIN mst_fakultas mf ON mf.FakultasId = tc.ComplainFakultasId
+			JOIN mst_mahasiswa mm ON mm.MahasiswaId = tc.ComplainMahasiswaId
+			WHERE 
+				DATE(tc.ComplainUpdatedDate) >= '$start' AND DATE(tc.ComplainUpdatedDate) <= '$end'
+				AND tc.ComplainToId= '$bag'
+			ORDER BY tc.ComplainId DESC";
+		$query = $this->db->query($sql);
+		// echo $query;
+		return $query;
+	}
+
+	function _get_data_sdm($start, $end, $bag)
+	{
+		$sql = "
+			SELECT tc.* ,mf.*,mm.*
+			FROM tbl_complain tc
+			JOIN mst_fakultas mf ON mf.FakultasId = tc.ComplainFakultasId
+			JOIN mst_mahasiswa mm ON mm.MahasiswaId = tc.ComplainMahasiswaId
+			WHERE 
+				DATE(tc.ComplainUpdatedDate) >= '$start' AND DATE(tc.ComplainUpdatedDate) <= '$end'
+				AND tc.ComplainToId= '$bag'
+			ORDER BY tc.ComplainId DESC";
+		$query = $this->db->query($sql);
+		// echo $query;
+		return $query;
 	}
 }
 
