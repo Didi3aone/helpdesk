@@ -1,84 +1,91 @@
 <div id="main" role="main">
 	<!-- MAIN CONTENT -->
-	<div id="content" class="container">
+	<div id="content" class="container" style="height: 100px;">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-7 col-lg-6 hidden-xs hidden-sm">
-				<h1 class="txt-color-red login-header-big"><?= DEFAULT_TITLE_MANAGER ?></h1>
-				<img src="<?= base_url(); ?>assets/img/uniat.png" class="img img-responsive" style="box-shadow: 1px 5px 5px 5px rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); margin-left: 40px;" alt="Logo">
+				<!-- <h1 class="txt-color-red login-header-big"><?php DEFAULT_TITLE_MANAGER ?></h1>
+				<img src="<?php //base_url(); ?>assets/img/uniat.png" class="img img-responsive" style="box-shadow: 1px 5px 5px 5px rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); margin-left: 40px;" alt="Logo"> -->
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-10">
 				<div class="well no-padding">
 					<form action="<?= site_url('mahasiswa/process_form'); ?>" id="creates-form" class="smart-form smarts-form" method="POST">
 						<header>
-							<i style="color: white;"><?= $title_msg; ?></i> 
+							<img src="<?php echo base_url(); ?>assets/img/uniat.png" class="img img-responsive" style="box-shadow: 1px 5px 5px 5px rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12); margin-left: 45%; width: 120px; height: 90px;" alt="Logo">
+							<i style="color: black;">Form User Registration</i> 
 						</header>
 
 						<fieldset>
-							<section>
-								<label for="">Nama Lengkap : </label>
-								<label class="input"> <i class="icon-append fa fa-user"></i>
-									<input type="text" name="name" id="name" placeholder="Nama Lengkap" required>
-								</label>
-							</section>
+							<div class="row">
+								<section class="col col-6">
+									<label for="">Nama Lengkap : </label>
+									<label class="input"> <i class="icon-append fa fa-user"></i>
+										<input type="text" name="name" id="name" placeholder="Nama Lengkap" required>
+									</label>
+								</section>
 
-							<section>
-								<label for="">NIM</label>
-								<label class="input"> <i class="icon-append fa fa-user"></i>
-									<input type="text" name="nim" id="nim" placeholder="NIM" required>
-								</label>
-							</section>
+								<section class="col col-6">
+									<label for="">NIM</label>
+									<label class="input"> <i class="icon-append fa fa-user"></i>
+										<input type="text" name="nim" id="nim" placeholder="NIM" required>
+									</label>
+								</section>
 
-							<section>
-								<label for="">Email</label>
-								<label class="input"> <i class="icon-append fa fa-envelope"></i>
-									<input type="email" name="email" id="email" placeholder="Email address" required>
-								</label>
-							</section>
+								<section class="col col-6">
+									<label for="">Email</label>
+									<label class="input"> <i class="icon-append fa fa-envelope"></i>
+										<input type="email" name="email" id="email" placeholder="Email address" required>
+									</label>
+								</section>
+							</div>
 
-							<section>
-								<label for="">Password</label>
-								<label class="input"> <i class="icon-append fa fa-lock"></i>
-									<input type="password" name="password" placeholder="Password" id="password" required>
-								</label>
-							</section>
+							<div class="row">
+								<section class="col col-6">
+									<label for="">Password</label>
+									<label class="input"> <i class="icon-append fa fa-lock"></i>
+										<input type="password" name="password" placeholder="Password" id="password" required>
+									</label>
+								</section>
 
-							<section>
-								<label for="">Password Confirmation</label>
-								<label class="input"> <i class="icon-append fa fa-lock"></i>
-									<input type="password" name="conf_password" id="conf_password" placeholder="Confirm password" required>
-								</label>
-							</section>
+								<section class="col col-6">
+									<label for="">Password Confirmation</label>
+									<label class="input"> <i class="icon-append fa fa-lock"></i>
+										<input type="password" name="conf_password" id="conf_password" placeholder="Confirm password" required>
+									</label>
+								</section>
 
-							<section>
-								<label for="">Fakultas</label>
-								<label class="select">
-									<select name="jurusan_id">
-										<option value="0">-- choose --</option>
-										<?php 
-											foreach($fakultas as $key => $value) : ?>
-												<option value="<?= $value['FakultasId']?>"><?= $value['FakultasName']; ?></option>
-										<?php endforeach;?>
-									</select> <i></i> 
-								</label>
-							</section>
+								<section class="col col-6">
+									<label for="">Fakultas</label>
+									<label class="select">
+										<select name="fakultasid">
+											<option value="0">-- choose --</option>
+											<?php 
+												foreach($fakultas as $key => $value) : ?>
+													<option value="<?= $value['FakultasId']?>"><?= $value['FakultasName']; ?></option>
+											<?php endforeach;?>
+										</select> <i></i> 
+									</label>
+								</section>
 
-							<section>
-								<label for="">Jurusan</label>
-								<label class="select">
-									<select name="jurusan_id">
-										<option value="0">-- choose --</option>
-										<?php 
-											foreach($jurusan as $key => $value) : ?>
-												<option value="<?= $value['JurusanId']?>"><?= $value['JurusanName']; ?></option>
-										<?php endforeach;?>
-									</select> <i></i> 
-								</label>
-							</section>
- 
-							<section>
-								<label class="input">Address</label>
-								<textarea name="pob" cols="63" rows="8.6"></textarea>
-							</section>
+								<section class="col col-6">
+									<label for="">Jurusan</label>
+									<label class="select">
+										<select name="jurusan_id">
+											<option value="0">-- choose --</option>
+											<?php 
+												foreach($jurusan as $key => $value) : ?>
+													<option value="<?= $value['JurusanId']?>"><?= $value['JurusanName']; ?></option>
+											<?php endforeach;?>
+										</select> <i></i> 
+									</label>
+								</section>
+							</div>
+							
+ 							<div class="row">
+								<section style="margin-left: 10px;">
+									<label class="input">Address</label>
+									<textarea name="pob" cols="63" rows="5"></textarea>
+								</section>
+ 							</div>
 						</fieldset>
 
 						<!-- <fieldset> -->

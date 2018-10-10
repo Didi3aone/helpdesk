@@ -94,14 +94,18 @@ class User extends MX_Controller  {
             "title_page"    => $this->_title_page . '<span>> Create User</span>',
             "active_page"   => $this->_active_page."create",
             "breadcrumb"    => $this->_breadcrumb . '<li>Create User</li>',
-            "back"          => $this->_back,
+            "back"          => $this->_back
         );
 
-        $data['role'] = $this->Dynamic_model->set_model("tbl_user_role","tur","role_id")->get_all_data()['datas'];
+        $data['role'] = $this->Dynamic_model->set_model("tbl_user_role","tur","role_id")->get_all_data(array(
+            "conditions" => array("role_id NOT IN(4)" => NULL)
+        ))['datas'];
 
         $data['fakultas'] = $this->Dynamic_model->set_model("mst_fakultas","mu","FakultasId")->get_all_data()['datas'];
 
-        $data['type'] = $this->Dynamic_model->set_model("tbl_user_type","tur","type_id")->get_all_data()['datas'];
+        $data['type'] = $this->Dynamic_model->set_model("tbl_user_type","tur","type_id")->get_all_data(array(
+            "conditions" => array("type_id NOT IN(7)" => NULL)
+        ))['datas'];
 
         $footer = array(
             "view_js_nav" => $this->_view_folder_js . "create_js",
@@ -549,16 +553,16 @@ class User extends MX_Controller  {
         $filter = $this->input->get("filter");
 
         $select = array(
-            'MahasiswaNim',
-            'MahasiswaName',
+            'user_nim',
+            'user_full_name',
             'mf.FakultasName',
             'mj.JurusanName',
-            'MahasiswaEmail'
+            'user_email'
         );
 
         $joined = array(
-            "mst_fakultas mf" => array("mf.FakultasId" => "mm.MahasiswaFakultasId"),
-            "mst_jurusan mj" => array("mj.JurusanId" => "mm.MahasiswaJurusanId")
+            "mst_fakultas mf" => array("mf.FakultasId" => "tu.user_fakultas_id"),
+            "mst_jurusan mj" => array("mj.JurusanId" => "tu.user_jurusan_id")
         );
 
         $column_sort = $select[$sort_col];

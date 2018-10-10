@@ -60,31 +60,32 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // $route['user-regis'] = "index/auth/user_registration";
 
 
-$route['default_controller'] = 'dashboard/dashboard_mahasiswa';
+$route['default_controller'] = 'dashboard';
 $route['404_override'] = 'error';
 $route['translate_uri_dashes'] = TRUE;
 
-$route['mahasiswa'] = "dashboard/dashboard_mahasiswa/index";
-$route['Auth'] = "mahasiswa/mahasiswa";
-$route['mahasiswa/logout'] = "mahasiswa/mahasiswa/logout";
-$route['mahasiswa/forgot-password'] = "index/index/forgot-password";
-$route['mahasiswa/reset-password/(:any)'] = "index/index/reset-password/$1";
-$route['mahasiswa/registration'] = "mahasiswa/user_registration";
 
+$route['dashboard'] = "dashboard/dashboard/index";
+$route['Auth'] = "index/index/login";
 $route['logout'] = "index/index/logout";
+// $route['mahasiswa/logout'] = "mahasiswa/mahasiswa/logout";
+// $route['mahasiswa/forgot-password'] = "index/index/forgot-password";
+// $route['mahasiswa/reset-password/(:any)'] = "index/index/reset-password/$1";
+$route['registration'] = "mahasiswa/user_registration";
 
-$route['manager'] = "dashboard/dashboard_manager/index";
-$route['manager/auth'] = "index/index_manager/login";
-$route['manager/logout'] = "index/index_manager/logout";
-$route['manager/forgot-password'] = "index/index_manager/forgot-password";
-$route['manager/reset-password/(:any)'] = "index/index_manager/reset-password/$1";
 
-$route['manager/([a-zA-Z_-]+)/([a-zA-Z_-]+)/([a-zA-Z_-]+)/([a-zA-Z_-]+)'] = '$1/$2/$3/$4';
-$route['manager/([a-zA-Z_-]+)/([a-zA-Z_-]+)/([a-zA-Z_-]+)/(:any)'] = '$1/$2/$3/$4';
-$route['manager/([a-zA-Z_-]+)/([a-zA-Z_-]+)/([a-zA-Z_-]+)'] = '$1/$2/$3';
-$route['manager/([a-zA-Z_-]+)/(:any)/(:any)'] = '$1/$1/$2/$3';
-$route['manager/([a-zA-Z_-]+)/(:any)'] = '$1/$1/$2';
-$route['manager/([a-zA-Z_-]+)'] = '$1/$1/index';
+// $route['manager'] = "dashboard/dashboard_manager/index";
+// $route['manager/auth'] = "index/index_manager/login";
+// $route['manager/logout'] = "index/index_manager/logout";
+// $route['manager/forgot-password'] = "index/index_manager/forgot-password";
+// $route['manager/reset-password/(:any)'] = "index/index_manager/reset-password/$1";
+
+// $route['manager/([a-zA-Z_-]+)/([a-zA-Z_-]+)/([a-zA-Z_-]+)/([a-zA-Z_-]+)'] = '$1/$2/$3/$4';
+// $route['manager/([a-zA-Z_-]+)/([a-zA-Z_-]+)/([a-zA-Z_-]+)/(:any)'] = '$1/$2/$3/$4';
+// $route['manager/([a-zA-Z_-]+)/([a-zA-Z_-]+)/([a-zA-Z_-]+)'] = '$1/$2/$3';
+// $route['manager/([a-zA-Z_-]+)/(:any)/(:any)'] = '$1/$1/$2/$3';
+// $route['manager/([a-zA-Z_-]+)/(:any)'] = '$1/$1/$2';
+// $route['manager/([a-zA-Z_-]+)'] = '$1/$1/index';
 
 // $route['mahasiswa/([a-zA-Z_-]+)/([a-zA-Z_-]+)/([a-zA-Z_-]+)/([a-zA-Z_-]+)'] = '$1/$2_mahasiswa/$3/$4';
 // $route['mahasiswa/([a-zA-Z_-]+)/([a-zA-Z_-]+)/([a-zA-Z_-]+)/(:any)'] = '$1/$2_mahasiswa/$3/$4';

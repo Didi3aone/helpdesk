@@ -5,8 +5,8 @@
     var url = "<?= site_url('complaint/'); ?>"
     var columns = [
         {"data": "ComplainName" },
-        {"data": "MahasiswaName" },
-        {"data": "MahasiswaNim" },
+        {"data": "user_full_name" },
+        {"data": "user_nim" },
         {"data": "FakultasName" },
         {"data": "type_name" },
         {"data": "status" },

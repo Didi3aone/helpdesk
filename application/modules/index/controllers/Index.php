@@ -20,20 +20,21 @@ class Index extends MX_Controller  {
 
         if($method == "login" && $this->session->has_userdata(IS_LOGIN_ADMIN)) {
             //redirect to dashboard
-            redirect('/mahasiswa');
+            redirect('/dashboard_manager');
         }
     }
+
 
     /**
 	 * login controller and for login form processing.
 	 */
-	public function index() {
+	public function login() {
         //load library and model.
 		$this->load->library('form_validation');
-        $this->load->model("admin/Admin_model");
+        $this->load->model("user/User_model");
 
         //set validations rules.
-        $this->form_validation->set_rules("username", "Username or Email", "trim|required");
+        $this->form_validation->set_rules("username", "Username", "trim|required");
         $this->form_validation->set_rules("password", "Password", "trim|required");
 
         $footer = array("script" => 'assets/js/pages/index/login.js');
@@ -53,27 +54,32 @@ class Index extends MX_Controller  {
             $password	= sha1($this->input->post("password"));
 
 			//check to the model if the username, email and password is correct.
-			$result = $this->Admin_model->check_login($username, $password);
+			$result = $this->User_model->check_login($username, $password);
 
 			//validate result.
 			if ($result) {
+            	// pr($result);exit;
                 //set session user (for login).
+                $name = ($result['user_name'] !='') ? $result['user_name'] : $result['user_full_name'];
                 $sess_data = array(
-                	"IS_LOGIN_MAHASISWA" 	=> TRUE,
-                	"name"	   		 		=> $result['mahasiswa_name'],
-                	"email"	   		 		=> $result['mahasiswa_email'],
-                	"password"				=> $result['mahasiswa_password'],
-                	"user_id"		 		=> $result['mahasiswa']
+                	"IS_LOGIN" 		 => TRUE,
+                	"name"	   		 => $name,
+                	"email"	   		 => $result['user_email'],
+                	"password"		 => $result['user_password'],
+                	"user_id"		 => $result['user_id'],
+                	"level"			 => $result['role_name'],
+                	"user_type"		 => $result['type_name'],
+                	"nim"			 => $result['user_nim']
                 );
-
+                // pr($sess_data);exit;
                 $this->session->set_userdata($sess_data);
-                $this->Admin_model->update(array(
+                $this->User_model->update(array(
                     "user_login_time" => date("Y-m-d H:i:s"),
                     "user_is_login"   => STATUS_LOGIN
                 ),array("user_id" => $result['user_id']));
 
                 //redirect to library module
-                redirect('/mahasiswa');
+                redirect('dashboard');
 
 			} else {
 				//invalid password or email | Username.
@@ -89,13 +95,8 @@ class Index extends MX_Controller  {
 
 	public function user_registration ()
 	{
-		$header = array(
-			"title_msg" => "User Registration"
-		);
-		
-		$footer = array(
-			"view_js_nav" => "mahasiswa/create_js_nav"
-		);
+		$header = array();
+		$footer = array();
 
 		//load the views
         $this->load->view(MANAGER_HEADER_REGIS ,$header);
@@ -110,7 +111,7 @@ class Index extends MX_Controller  {
 	public function logout() {
         //unset sessions and back to login.
         $this->session->unset_userdata(IS_LOGIN_ADMIN);
-		redirect('/login');
+		redirect('Auth');
 	}
 
 
@@ -122,7 +123,7 @@ class Index extends MX_Controller  {
 
 		//load library and model.
 		$this->load->library('form_validation');
-        $this->load->model("admin/Admin_model");
+        $this->load->model("admin/User_model");
 
         //set validations rules.
         $this->form_validation->set_rules("email", "Email", "trim|required|valid_email");
@@ -144,7 +145,7 @@ class Index extends MX_Controller  {
             $email = $this->input->post("email");
 
 			//check to the model if the email is correct.
-			$result = $this->Admin_model->get_all_data(array(
+			$result = $this->User_model->get_all_data(array(
                 "row_array" => TRUE,
                 "conditions" => array("email" => $email),
             ))['datas'];
@@ -157,7 +158,7 @@ class Index extends MX_Controller  {
 				$this->db->trans_begin();
 
                 //create an url which the user can click to reset their password.
-				$forgot_link = $this->Admin_model->send_forgot_pass($result);
+				$forgot_link = $this->User_model->send_forgot_pass($result);
 
                 //end transaction.
 				if ($this->db->trans_status() === FALSE) {
@@ -208,7 +209,7 @@ class Index extends MX_Controller  {
 	public function reset_password($code) {
 
         //load model.
-		$this->load->model('admin/Admin_model');
+		$this->load->model('admin/User_model');
 
         //check code.
 		if (!$code) {
@@ -219,7 +220,7 @@ class Index extends MX_Controller  {
 		$code_decoded = base64_decode(urldecode($code));
 
 		//check code if exist.
-		$user = $this->Admin_model->checkCode($code_decoded);
+		$user = $this->User_model->checkCode($code_decoded);
 		if (!$user) {
 			show_404();
 		}
@@ -232,7 +233,7 @@ class Index extends MX_Controller  {
 		$this->db->trans_begin();
 
 		//reset passsword.
-		$new_pass = $this->Admin_model->reset_password($user);
+		$new_pass = $this->User_model->reset_password($user);
 
         //end transaction.
 		if ($this->db->trans_status() === FALSE) {

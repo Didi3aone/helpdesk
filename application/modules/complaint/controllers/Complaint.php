@@ -386,7 +386,9 @@ class Complaint extends MX_Controller {
         );
 
         $data['fakultas'] = $this->_dm->set_model("mst_fakultas","mf","FakultasId")->get_all_data()['datas'];
-        $data['type']	  = $this->_dm->set_model("tbl_user_type","tut","type_id")->get_all_data()['datas'];
+        $data['type']	  = $this->_dm->set_model("tbl_user_type","tut","type_id")->get_all_data(array(
+            "conditions" => array("type_id NOT IN(7)" => NULL)
+        ))['datas'];
 		// pr($data)
 
         $footer = array(
@@ -435,8 +437,8 @@ class Complaint extends MX_Controller {
         $select = array(
             'tc.ComplainId',
             'tc.ComplainName',
-            'mm.MahasiswaName',
-            'mm.MahasiswaNim',
+            'mm.user_full_name',
+            'mm.user_nim',
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
@@ -446,7 +448,7 @@ class Complaint extends MX_Controller {
 
         $joined = array(
             "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
-            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "tbl_user mm"  => array("mm.user_id" => "tc.ComplainUserId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
 
@@ -465,13 +467,13 @@ class Complaint extends MX_Controller {
                 switch ($key) {
                     case 'name':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                            $data_filters['lower(mm.user_full_name)'] = $value;
                         }
                         break;
 
                     case 'nim':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                            $data_filters['lower(mm.user_nim)'] = $value;
                         }
                         break;
 
@@ -561,8 +563,8 @@ class Complaint extends MX_Controller {
         $select = array(
             'tc.ComplainId',
             'tc.ComplainName',
-            'mm.MahasiswaName',
-            'mm.MahasiswaNim',
+            'mm.user_full_name',
+            'mm.user_nim',
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
@@ -572,7 +574,7 @@ class Complaint extends MX_Controller {
 
         $joined = array(
             "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
-            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "tbl_user mm"  => array("mm.user_id" => "tc.ComplainUserId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
 
@@ -591,13 +593,13 @@ class Complaint extends MX_Controller {
                 switch ($key) {
                     case 'name':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                            $data_filters['lower(mm.user_full_name)'] = $value;
                         }
                         break;
 
                     case 'nim':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                            $data_filters['lower(mm.user_nim)'] = $value;
                         }
                         break;
 
@@ -684,8 +686,8 @@ class Complaint extends MX_Controller {
         $select = array(
             'tc.ComplainId',
             'tc.ComplainName',
-            'mm.MahasiswaName',
-            'mm.MahasiswaNim',
+            'mm.user_full_name',
+            'mm.user_nim',
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
@@ -695,7 +697,7 @@ class Complaint extends MX_Controller {
 
         $joined = array(
             "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
-            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "tbl_user mm"  => array("mm.user_id" => "tc.ComplainUserId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
 
@@ -714,13 +716,13 @@ class Complaint extends MX_Controller {
                 switch ($key) {
                     case 'name':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                            $data_filters['lower(mm.user_full_name)'] = $value;
                         }
                         break;
 
                     case 'nim':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                            $data_filters['lower(mm.user_nim)'] = $value;
                         }
                         break;
 
@@ -807,8 +809,8 @@ class Complaint extends MX_Controller {
         $select = array(
             'tc.ComplainId',
             'tc.ComplainName',
-            'mm.MahasiswaName',
-            'mm.MahasiswaNim',
+            'mm.user_full_name',
+            'mm.user_nim',
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
@@ -818,7 +820,7 @@ class Complaint extends MX_Controller {
 
         $joined = array(
             "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
-            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "tbl_user mm"  => array("mm.user_id" => "tc.ComplainUserId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
 
@@ -837,13 +839,13 @@ class Complaint extends MX_Controller {
                 switch ($key) {
                     case 'name':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                            $data_filters['lower(mm.user_full_name)'] = $value;
                         }
                         break;
 
                     case 'nim':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                            $data_filters['lower(mm.user_nim)'] = $value;
                         }
                         break;
 
@@ -930,8 +932,8 @@ class Complaint extends MX_Controller {
         $select = array(
             'tc.ComplainId',
             'tc.ComplainName',
-            'mm.MahasiswaName',
-            'mm.MahasiswaNim',
+            'mm.user_full_name',
+            'mm.user_nim',
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
@@ -941,7 +943,7 @@ class Complaint extends MX_Controller {
 
         $joined = array(
             "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
-            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "tbl_user mm"  => array("mm.user_id" => "tc.ComplainUserId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
 
@@ -959,13 +961,13 @@ class Complaint extends MX_Controller {
                 switch ($key) {
                     case 'name':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                            $data_filters['lower(mm.user_full_name)'] = $value;
                         }
                         break;
 
                     case 'nim':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                            $data_filters['lower(mm.user_nim)'] = $value;
                         }
                         break;
 
@@ -1052,8 +1054,8 @@ class Complaint extends MX_Controller {
         $select = array(
             'tc.ComplainId',
             'tc.ComplainName',
-            'mm.MahasiswaName',
-            'mm.MahasiswaNim',
+            'mm.user_full_name',
+            'mm.user_nim',
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
@@ -1063,7 +1065,7 @@ class Complaint extends MX_Controller {
 
         $joined = array(
             "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
-            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "tbl_user mm"  => array("mm.user_id" => "tc.ComplainUserId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
         $left_joined = array("trs_status_complain tsc" => array("tsc.StatusId" => "tc.ComplainStatusId"));
@@ -1080,13 +1082,13 @@ class Complaint extends MX_Controller {
                 switch ($key) {
                     case 'name':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                            $data_filters['lower(mm.user_full_name)'] = $value;
                         }
                         break;
 
                     case 'nim':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                            $data_filters['lower(mm.user_nim)'] = $value;
                         }
                         break;
 
@@ -1173,8 +1175,8 @@ class Complaint extends MX_Controller {
         $select = array(
             'tc.ComplainId',
             'tc.ComplainName',
-            'mm.MahasiswaName',
-            'mm.MahasiswaNim',
+            'mm.user_full_name',
+            'mm.user_nim',
             'mf.FakultasName',
             'tut.type_name',
             'tc.ComplainCreatedDate',
@@ -1184,7 +1186,7 @@ class Complaint extends MX_Controller {
 
         $joined = array(
             "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
-            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "tbl_user mm"  => array("mm.user_id" => "tc.ComplainUserId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
 
@@ -1203,13 +1205,13 @@ class Complaint extends MX_Controller {
                 switch ($key) {
                     case 'name':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                            $data_filters['lower(mm.user_full_name)'] = $value;
                         }
                         break;
 
                     case 'nim':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                            $data_filters['lower(mm.user_nim)'] = $value;
                         }
                         break;
 
@@ -1303,7 +1305,7 @@ class Complaint extends MX_Controller {
 
         $joined = array(
             "tbl_user_type tut" => array("tut.type_id" => "tc.ComplainToId"),
-            "mst_mahasiswa mm"  => array("mm.MahasiswaId" => "tc.ComplainMahasiswaId"),
+            "tbl_user mm"  => array("mm.user_id" => "tc.ComplainUserId"),
             "mst_fakultas mf"   => array("mf.FakultasId"  => "tc.ComplainFakultasId")
         );
 
@@ -1311,10 +1313,10 @@ class Complaint extends MX_Controller {
 
         $column_sort = $select[$sort_col];
 
-        $id_mhs = $this->session->userdata("id_mhs");
+        $id_mhs = $this->session->userdata("user_id");
         //initialize.
         $data_filters = array();
-        $conditions = array("tc.ComplainMahasiswaId" => $id_mhs);
+        $conditions = array("tc.ComplainUserId" => $id_mhs);
         $status = STATUS_ACTIVE;
 
         if (count ($filter) > 0) {
@@ -1323,13 +1325,13 @@ class Complaint extends MX_Controller {
                 switch ($key) {
                     case 'name':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaName)'] = $value;
+                            $data_filters['lower(mm.user_full_name)'] = $value;
                         }
                         break;
 
                     case 'nim':
                         if ($value != "") {
-                            $data_filters['lower(mm.MahasiswaNim)'] = $value;
+                            $data_filters['lower(mm.user_nim)'] = $value;
                         }
                         break;
 
@@ -1422,7 +1424,7 @@ class Complaint extends MX_Controller {
         $note           = $this->input->post('note');
         $StatusId       = $this->input->post('StatusId');
         $now            = date('Y-m-d H:i:s');
-        $mahasiswa      = $this->session->userdata('id_mhs');
+        $mahasiswa      = $this->session->userdata('user_id');
 
 
         //server side validation.
@@ -1445,7 +1447,7 @@ class Complaint extends MX_Controller {
                 "ComplainFakultasId" 	=> $fak_id,
                 "ComplainToId"       	=> $to_id,
                 "ComplainDesc"		 	=> $desc,
-                "ComplainMahasiswaId" 	=> $mahasiswa
+                "ComplainUserId" 	    => $mahasiswa
             );
 
             //insert or update?
@@ -1457,6 +1459,13 @@ class Complaint extends MX_Controller {
                 $_save_data["ComplainRemark"]       = $note;
                 $result = $this->_dm->set_model("tbl_complain","tc","ComplainId")->insert($_save_data);
 
+                $this->_dm->set_model("tbl_log_complain","tlc","complain_id")->insert(array(
+                    "log_name" => "COMPLAIN",
+                    "log_complain_id" => $result,
+                    "log_mhs_id"   => $mahasiswa,
+                    "log_status_id" => STATUS_SEND_COMPLAIN,
+                    "log_date"      => $now
+                ));
                 //end transaction.
                 if ($this->db->trans_status() === FALSE) {
                     $this->db->trans_rollback();
@@ -1535,7 +1544,7 @@ class Complaint extends MX_Controller {
         $note           = $this->input->post('note');
         $StatusId       = $this->input->post('StatusId');
         $now            = date('Y-m-d H:i:s');
-        $mahasiswa      = $this->session->userdata('id_mhs');
+        $followupid     = $this->session->userdata('user_id');
 
 
         //server side validation.
@@ -1552,13 +1561,28 @@ class Complaint extends MX_Controller {
             $_save_data['ComplainUpdatedDate']  = $now;
             $_save_data["ComplainStatusId"]     = $StatusId;
             $_save_data["ComplainRemark"]       = $note;
+            $_save_data["ComplainFollowUpId"]   = $followupid;
 
-            $condition = array("ComplainId" => $id);
+            $condition = array(
+                "ComplainId" => $id
+            );
             
             $result = $this->_dm->set_model("tbl_complain","tc","ComplainId")->update($_save_data, $condition);
 
             if( $result )
             {
+                $name = $this->_dm->set_model("tbl_user","tu","user_id")->get_all_data(array(
+                    "conditions" => array("user_id" => $followupid),
+                    "row_array"  => true
+                ));
+
+                $this->_dm->set_model('tbl_log_complain','tlc','log_id')->update(array(
+                    // "log_complain_id" => $id,
+                    "log_name"              => "COMPLAIN FOLLOW UP BY USER ID (".$name['user_name'].")",
+                    "log_status_id"         => $StatusId,
+                    "log_complain_aprv_id"  => $followupid
+                ),array("log_complain_id" => $id));
+
                 //end transaction.
                 if ($this->db->trans_status() === FALSE) {
                     $this->db->trans_rollback();
@@ -1579,7 +1603,7 @@ class Complaint extends MX_Controller {
                 }
             }
 
-            // $message['error_msg'] = 'Invalid ID.';
+            $message['error_msg'] = 'Invalid ID.';
         }
 
         //encoding and returning.

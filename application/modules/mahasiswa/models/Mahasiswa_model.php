@@ -6,9 +6,9 @@
  */
 class Mahasiswa_model extends CI_Model {
 
-    protected $_table = 'mst_mahasiswa';
-    protected $_table_alias = 'mm';
-    protected $_pk_field = 'MahasiswaId';
+    protected $_table = 'tbl_user';
+    protected $_table_alias = 'tu';
+    protected $_pk_field = 'user_id';
 
     public function __construct() {
         parent::__construct();
@@ -233,13 +233,13 @@ class Mahasiswa_model extends CI_Model {
     /**
     * function check login user
     */
-    public function check_login($nim , $pass) 
-    {
-       //get data by username.
-        $this->db->where("MahasiswaNim" , $nim);
-        $this->db->where("MahasiswaPassword", $pass);
+    // public function check_login($nim , $pass) 
+    // {
+    //    //get data by username.
+    //     $this->db->where("user_nim" , $nim);
+    //     $this->db->where("user_", $pass);
 
-        $res = $this->db->get($this->_table)->row_array();
-        return $res;
-    }
+    //     $res = $this->db->get($this->_table)->row_array();
+    //     return $res;
+    // }
 }

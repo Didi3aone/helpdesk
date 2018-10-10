@@ -24,7 +24,8 @@ class Report extends CI_Controller {
             "breadcrumb"    => $this->_breadcrumb . '<li>Report</li>',
         );
 
-        $data['bagian'] = $this->Dynamic_model->set_model("tbl_user_type","tut","type_id")->get_all_data()['datas'];
+        $data['bagian'] = $this->Dynamic_model->set_model("tbl_user_type","tut","type_id")->get_all_data(array(
+        	"conditions" => array("tut.type_id NOT IN ('7')" => NULL)))['datas'];
 		$footer = array(
 			"view_js_nav" => $this->_view_folder."rpt_js"
 		);
@@ -135,7 +136,7 @@ class Report extends CI_Controller {
 			SELECT tc.* ,mf.*,mm.*
 			FROM tbl_complain tc
 			JOIN mst_fakultas mf ON mf.FakultasId = tc.ComplainFakultasId
-			JOIN mst_mahasiswa mm ON mm.MahasiswaId = tc.ComplainMahasiswaId
+			JOIN tbl_user mm ON mm.user_id = tc.ComplainUserId
 			WHERE 
 				DATE(tc.ComplainUpdatedDate) >= '$start' AND DATE(tc.ComplainUpdatedDate) <= '$end'
 				AND tc.ComplainToId='$bag'
@@ -151,7 +152,7 @@ class Report extends CI_Controller {
 			SELECT tc.* ,mf.*,mm.*
 			FROM tbl_complain tc
 			JOIN mst_fakultas mf ON mf.FakultasId = tc.ComplainFakultasId
-			JOIN mst_mahasiswa mm ON mm.MahasiswaId = tc.ComplainMahasiswaId
+			JOIN tbl_user mm ON mm.user_id = tc.ComplainUserId
 			WHERE 
 				DATE(tc.ComplainUpdatedDate) >= '$start' AND DATE(tc.ComplainUpdatedDate) <= '$end'
 				AND tc.ComplainToId= '$bag'
@@ -167,7 +168,7 @@ class Report extends CI_Controller {
 			SELECT tc.* ,mf.*,mm.*
 			FROM tbl_complain tc
 			JOIN mst_fakultas mf ON mf.FakultasId = tc.ComplainFakultasId
-			JOIN mst_mahasiswa mm ON mm.MahasiswaId = tc.ComplainMahasiswaId
+			JOIN tbl_user mm ON mm.user_id = tc.ComplainUserId
 			WHERE 
 				DATE(tc.ComplainUpdatedDate) >= '$start' AND DATE(tc.ComplainUpdatedDate) <= '$end'
 				AND tc.ComplainToId= '$bag'
@@ -183,7 +184,7 @@ class Report extends CI_Controller {
 			SELECT tc.* ,mf.*,mm.*
 			FROM tbl_complain tc
 			JOIN mst_fakultas mf ON mf.FakultasId = tc.ComplainFakultasId
-			JOIN mst_mahasiswa mm ON mm.MahasiswaId = tc.ComplainMahasiswaId
+			JOIN tbl_user mm ON mm.user_id = tc.ComplainUserId
 			WHERE 
 				DATE(tc.ComplainUpdatedDate) >= '$start' AND DATE(tc.ComplainUpdatedDate) <= '$end'
 				AND tc.ComplainToId= '$bag'
@@ -199,7 +200,7 @@ class Report extends CI_Controller {
 			SELECT tc.* ,mf.*,mm.*
 			FROM tbl_complain tc
 			JOIN mst_fakultas mf ON mf.FakultasId = tc.ComplainFakultasId
-			JOIN mst_mahasiswa mm ON mm.MahasiswaId = tc.ComplainMahasiswaId
+			JOIN tbl_user mm ON mm.user_id = tc.ComplainUserId
 			WHERE 
 				DATE(tc.ComplainUpdatedDate) >= '$start' AND DATE(tc.ComplainUpdatedDate) <= '$end'
 				AND tc.ComplainToId= '$bag'
@@ -215,7 +216,7 @@ class Report extends CI_Controller {
 			SELECT tc.* ,mf.*,mm.*
 			FROM tbl_complain tc
 			JOIN mst_fakultas mf ON mf.FakultasId = tc.ComplainFakultasId
-			JOIN mst_mahasiswa mm ON mm.MahasiswaId = tc.ComplainMahasiswaId
+			JOIN tbl_user mm ON mm.user_id = tc.ComplainUserId
 			WHERE 
 				DATE(tc.ComplainUpdatedDate) >= '$start' AND DATE(tc.ComplainUpdatedDate) <= '$end'
 				AND tc.ComplainToId= '$bag'

@@ -6,11 +6,9 @@
 </head>
 <body>
 	<table class="table table-striped">
-		<caption>Report Complain Bagian Keuangan</caption>
-		<p> START DATE = <?= $_REQUEST['start_date']; ?></p>
-		<p> END DATE = <?= $_REQUEST['end_date']; ?></p>
+		<caption><center> <h1>Report Complain Bagian Keuangan</h1></center></caption>
 		<thead>
-			<tr>
+			<tr bgcolor="blue">
 				<th>No</th>
 				<th>Complain Date</th>
 				<th>Nama Mahasiswa</th>
@@ -27,8 +25,8 @@
 			<tr>
 				<td><?= $no++ ?></td>
 				<td><?= $val['ComplainUpdatedDate']; ?></td>
-				<td><?= $val['MahasiswaName']; ?></td>
-				<td><?= $val['MahasiswaNim']; ?></td>
+				<td><?= $val['user_full_name']; ?></td>
+				<td><?= $val['user_nim']; ?></td>
 				<td><?= $val['FakultasDesc']; ?></td>
 			</tr>
 			<?php 

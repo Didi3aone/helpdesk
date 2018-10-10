@@ -1,20 +1,20 @@
 <div id="main" role="main">
 	<!-- MAIN CONTENT -->
-	<div id="content" class="container">
+	<div id="content">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-7 col-lg-6 hidden-xs hidden-sm">
 				<h1 class="txt-color-red login-header-big"><?= DEFAULT_TITLE_MANAGER ?></h1>
 				<img src="<?= base_url(); ?>assets/img/uniat.png" class="img img-responsive" style="box-shadow: 1px 5px 5px 5px rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);" alt="Logo">
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-10">
 				<div class="well no-padding">
-					<form action="<?= site_url('mahasiswa/process_form'); ?>" id="smart-form-register" class="smart-form smarts-form client-form">
+					<form action="<?= site_url('mahasiswa/process_form'); ?>" class="smart-form smarts-form client-form">
 						<header>
 							<i style="color: white;"><?= $title_msg; ?></i> 
 						</header>
 
 						<fieldset>
-							<section>
+							<section class="col col-4">
 								<label class="input"> <i class="icon-append fa fa-user"></i>
 									<input type="text" name="username" placeholder="Nama Lengkap">
 									<b class="tooltip tooltip-bottom-right">Needed to enter the website</b> 

@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Dashboard Controller.
  * For Dashboard admin
  */
-class Dashboard_manager extends MX_Controller  {
+class Dashboard extends MX_Controller  {
     private $_title = "Dashboard";
     private $_title_page = '<i class="fa-fw fa fa-home"></i> Dashboard ';
     private $_active_page = "dashboard";
@@ -21,8 +21,8 @@ class Dashboard_manager extends MX_Controller  {
     public function __construct() {
         parent::__construct();
         $this->load->model('Dynamic_model');
-        if($this->session->userdata(IS_LOGIN_ADMIN) == FALSE) {
-            redirect('manager/auth');
+        if($this->session->userdata("IS_LOGIN") == FALSE) {
+            redirect('Auth');
         }
     }
 

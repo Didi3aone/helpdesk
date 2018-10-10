@@ -4,11 +4,11 @@
     var ajax_source = "<?= site_url('user/list-all-datas') ?>";
     var url = "<?= site_url('mahasiswa/'); ?>"
     var columns = [
-        {"data": "MahasiswaNim" },
-        {"data": "MahasiswaName" },
+        {"data": "user_nim" },
+        {"data": "user_full_name" },
         {"data": "FakultasName" },
         {"data": "JurusanName" },
-        {"data": "MahasiswaEmail" },
+        {"data": "user_email" },
         {
             "title": "Action",
             "class": "text-center",

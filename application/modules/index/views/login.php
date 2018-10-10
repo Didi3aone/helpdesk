@@ -8,7 +8,7 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
             <div class="well no-padding">
-                <form action="<?= site_url('manager/auth');?>" id="login-form" class="smart-form smarts-form client-form" method="post">
+                <form action="<?= site_url('Auth');?>" id="login-form" class="smart-form smarts-form client-form" method="post">
                     <header>
                         <i style="color: white;">Sign In</i>
                     </header>
@@ -24,9 +24,9 @@
                         <?php endif; ?>
 
                         <section>
-                            <label class="label">Username</label>
+                            <label class="label">NIM</label>
                             <label class="input"> <i class="icon-append fa fa-user"></i>
-                                <input type="text" name="username" placeholder="Username" autofocus>
+                                <input type="text" name="username" placeholder="NIM" autofocus>
                                 <b class="tooltip tooltip-top-right"><i class="fa fa-user txt-color-teal"></i> Please enter username</b></label>
                         </section>
 
@@ -35,15 +35,17 @@
                             <label class="input"> <i class="icon-append fa fa-lock"></i>
                                 <input type="password" name="password" placeholder="Password">
                                 <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> Enter your password</b> </label>
-                            <div class="note">
+                            <!-- <div class="note">
                                 <a href="/forgot-password">Forgot password?</a>
-                            </div>
+                            </div> -->
                         </section>
                     </fieldset>
                     <footer>
                         <button type="submit" class="btn btn-primary" name="login">
                             Sign in
                         </button>
+
+                        <a href="<?= site_url('registration'); ?>" title="" class="btn btn-danger"><i></i>Register</a>
                     </footer>
                 </form>
 

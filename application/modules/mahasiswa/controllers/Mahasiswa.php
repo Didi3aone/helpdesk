@@ -28,7 +28,7 @@ class Mahasiswa extends MX_Controller  {
     public function index() {
         //load library and model.
         $this->load->library('form_validation');
-        $this->load->model("Mahasiswa_model");
+        $this->load->model("user/User_model");
 
         //set validations rules.
         $this->form_validation->set_rules("nim", "Username or Email", "trim|required");
@@ -51,28 +51,28 @@ class Mahasiswa extends MX_Controller  {
             $password   = sha1($this->input->post("password"));
 
             //check to the model if the username, email and password is correct.
-            $result = $this->Mahasiswa_model->check_login($nim, $password);
+            $result = $this->User_model->check_login($nim, $password);
 
             //validate result.
             if ($result) {
                 //set session user (for login).
                 $sess_data = array(
                     "IS_LOGIN_MAHASISWA"    => TRUE,
-                    "name"                  => $result['MahasiswaName'],
-                    "email"                 => $result['MahasiswaEmail'],
-                    "nim"                   => $result['MahasiswaNim'],
-                    "id_mhs"                => $result['MahasiswaId'],
-                    "password"              => $result['MahasiswaPassword']
+                    "name"                  => $result['user_full_name'],
+                    "email"                 => $result['user_email'],
+                    "nim"                   => $result['user_nim'],
+                    "user_id"               => $result['user_id'],
+                    "password"              => $result['user_password']
                 );
                 // pr($this->input->post());exit;
                 $this->session->set_userdata($sess_data);
                 $this->Mahasiswa_model->update(array(
-                    "MahasiswaLastLogin" => date("Y-m-d H:i:s"),
-                    // "user_is_login"   => STATUS_LOGIN
-                ),array("MahasiswaId" => $result['MahasiswaId']));
+                    "user_login_time" => date("Y-m-d H:i:s"),
+                    "user_is_login"   => STATUS_LOGIN
+                ),array("user_id" => $result['user_id']));
 
                 //redirect to library module
-                redirect('mahasiswa');
+                redirect('dashboard');
 
             } else {
                 //invalid password or email | Username.
@@ -110,7 +110,6 @@ class Mahasiswa extends MX_Controller  {
         );
 
         $data['item'] = $session;
-        // pr($data['item']);exit;
 
         //load the view.
         $this->load->view(MANAGER_HEADER_MAHASISWA, $header);
@@ -198,7 +197,7 @@ class Mahasiswa extends MX_Controller  {
     /**
      * RULE validation for Change Profile
      */
-    private function _set_rule_validation_profile($id) {
+    private function _set_rule_validation_profile() {
 
         //prepping to set no delimiters.
         $this->form_validation->set_error_delimiters('', '');
@@ -207,8 +206,8 @@ class Mahasiswa extends MX_Controller  {
         $this->form_validation->set_rules("name", "Name", "trim|required|min_length[3]|max_length[100]");
 
         //special validations for when editing.
-        $this->form_validation->set_rules('nim', 'nim', "trim|required|callback_check_nim[$id]");
-        $this->form_validation->set_rules('email', 'Email', "trim|required|callback_check_email[$id]");
+        $this->form_validation->set_rules('nim', 'nim', "trim|required");
+        $this->form_validation->set_rules('email', 'Email', "trim|required");
     }
 
     /**
@@ -236,10 +235,10 @@ class Mahasiswa extends MX_Controller  {
 
         if ($id == "") {
             //from create
-            $params['conditions'] = array("lower(MahasiswaNim)" => strtolower($str));
+            $params['conditions'] = array("lower(user_nim)" => strtolower($str));
         } else {
             $params['conditions'] = array(
-                "lower(MahasiswaNim)" => strtolower($str), 
+                "lower(user_nim)" => strtolower($str), 
                 "MahasiswaId !=" => $id
             );
         }
@@ -268,10 +267,10 @@ class Mahasiswa extends MX_Controller  {
 
         if ($id == "") {
             //from create
-            $params['conditions'] = array("lower(MahasiswaEmail)" => strtolower($str));
+            $params['conditions'] = array("lower(user_email)" => strtolower($str));
         } else {
             $params['conditions'] = array(
-                "lower(MahasiswaEmail)" => strtolower($str), 
+                "lower(user_email)" => strtolower($str), 
                 "MahasiswaId !=" => $id
             );
         }
@@ -327,6 +326,7 @@ class Mahasiswa extends MX_Controller  {
         $name           = $this->input->post('name');
         $nim            = $this->input->post('nim');
         $email          = $this->input->post('email');
+        $fakultasid     = $this->input->post('fakultasid');
         $jurusan_id     = $this->input->post('jurusan_id');
         $password       = $this->input->post('password');
         $password       = $this->input->post('conf_password');
@@ -345,18 +345,22 @@ class Mahasiswa extends MX_Controller  {
             $this->db->trans_begin();
             //validation success, prepare array to DB.
             $_save_data = array(
-                'MahasiswaName'            => $name,
-                'MahasiswaNim'             => $nim,
-                'MahasiswaEmail'           => $email,
-                'MahasiswaJurusanId'      => $jurusan_id,
-                'MahasiswaPob'         => $address,
+                'user_full_name'       => $name,
+                'user_nim'             => $nim,
+                'user_email'           => $email,
+                'user_fakultas_id'     => $fakultasid,
+                'user_jurusan_id'      => $jurusan_id,
+                'user_address'         => $address,
+                'user_type_id'         => '7',
+                'user_role_id'         => '4',
+                'user_name'            => NULL
             );
 
             //insert or update?
             if ($id == "") {
-                $_save_data['MahasiswaCreatedDate']    = $date_now;
-                $_save_data['MahasiswaRegisterDate']   = $date_now;
-                $_save_data['MahasiswaPassword']       = sha1($password);
+                $_save_data['user_created_date']    = $date_now;
+                $_save_data['user_register_date']   = $date_now;
+                $_save_data['user_password']        = sha1($password);
                 //insert to DB.
                 $result = $this->Mahasiswa_model->insert($_save_data);
 
@@ -373,17 +377,17 @@ class Mahasiswa extends MX_Controller  {
                     $message['notif_message']   = "Register success.";
 
                     //on insert, not redirected.
-                    $message['redirect_to'] = site_url("mahasiswa");
+                    $message['redirect_to'] = site_url("Auth");
                 }
             } else {
                 //update.
                 if ($new_password != "") {
-                    $arrayToDB['MahasiswaPassword'] = sha1($new_password);
+                    $arrayToDB['user_password'] = sha1($new_password);
                 }
-                $arrayToDB['MahasiswaUpdatedDate'] = $date_now;
+                $arrayToDB['user_updated_date'] = $date_now;
                 //condition for update.
-                $condition = array("MahasiswaId" => $id);
-                $result = $this->Admin_model->update($arrayToDB, $condition);
+                $condition = array("user_id" => $id);
+                $result = $this->Mahasiswa_model->update($arrayToDB, $condition);
 
                 //end transaction.
                 if ($this->db->trans_status() === FALSE) {
@@ -400,7 +404,7 @@ class Mahasiswa extends MX_Controller  {
                     $message['notif_message'] = "Admin has been updated.";
 
                     //on update, redirect.
-                    $message['redirect_to'] = "/admin";
+                    $message['redirect_to'] = "";
                 }
             }
         }
@@ -438,7 +442,7 @@ class Mahasiswa extends MX_Controller  {
         $nim        = $this->input->post('nim');
         $email      = $this->input->post('email');
 
-        $this->_set_rule_validation_profile($id);
+        $this->_set_rule_validation_profile();
 
         if ($this->form_validation->run($this) == FALSE) {
             //validation failed.
@@ -449,13 +453,13 @@ class Mahasiswa extends MX_Controller  {
 
             //validation success, prepare array to DB.
             $arrayToDB = array(
-                'MahasiswaName'  => $name,
-                'MahasiswaNim'   => $nim,
-                'MahasiswaEmail' => $email
+                'user_full_name'  => $name,
+                'user_nim'        => $nim,
+                'user_email'      => $email
             );
 
             if (!empty($id)) {
-                $condition = array("MahasiswaId" => $id);
+                $condition = array("user_id" => $id);
                 $insert = $this->Mahasiswa_model->update($arrayToDB,$condition);
             }
 
@@ -475,20 +479,21 @@ class Mahasiswa extends MX_Controller  {
                 $message['notif_message'] = "Profile has been updated.";
 
                 //on insert, not redirected.
-                $message['redirect_to'] = site_url("mahasiswa");
+                $message['redirect_to'] = "";
 
 
                 //re-set the session
-                $params = array("row_array" => true,"conditions" => array("MahasiswaId" => $id));
+                $params = array("row_array" => true,"conditions" => array("user_id" => $id));
                 $set = $this->Mahasiswa_model->get_all_data($params)['datas'];
                 //set session user (for login).
                 $sess_data = array(
-                    "IS_LOGIN_MAHASISWA"    => TRUE,
-                    "name"                  => $set['MahasiswaName'],
-                    "email"                 => $set['MahasiswaEmail'],
-                    "nim"                   => $set['MahasiswaNim'],
-                    "id"                    => $set['MahasiswaId'],
-                    "password"              => $set['MahasiswaPassword']
+                    "IS_LOGIN"              => TRUE,
+                    "name"                  => $set['user_full_name'],
+                    "email"                 => $set['user_email'],
+                    "nim"                   => $set['user_nim'],
+                    "id"                    => $set['user_id'],
+                    "password"              => $set['user_password'],
+                    "nim"                   => $set['user_nim']
                 );
 
                 $this->session->set_userdata($sess_data);
@@ -533,10 +538,10 @@ class Mahasiswa extends MX_Controller  {
             $this->db->trans_begin();
 
             //validation success, prepare array to DB.
-            $SaveData = array('MahasiswaPassword'  => sha1($password));
+            $SaveData = array('user_password'  => sha1($password));
 
             if (!empty($id)) {
-                $condition = array("MahasiswaId" => $id);
+                $condition = array("user_id" => $id);
                 $insert = $this->Mahasiswa_model->update($SaveData,$condition);
             }
 

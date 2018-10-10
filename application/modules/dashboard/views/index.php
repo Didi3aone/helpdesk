@@ -175,7 +175,7 @@
 						<a href="<?= site_url('complaint/list-alumni'); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 					</div>
 				</div>
-			<?php else: ?>
+			<?php elseif($type == "BAGIAN UMUM"): ?>
 				<div class="col-lg-4 col-xs-6">
 					<!-- small box -->
 					<div class="small-box bg-red">
@@ -189,6 +189,8 @@
 						<a href="<?= site_url('complaint/list-umum'); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 					</div>
 				</div>
+			<?php else: ?>
+				
 			<?php endif;?>
 		<?php endif; ?>
 	</div>

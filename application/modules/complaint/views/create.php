@@ -1,8 +1,8 @@
 <?php
-    $id            = isset($datas["user_id"]) ? $datas["user_id"] : "";
+    $id         = isset($datas["user_id"]) ? $datas["user_id"] : "";
 
-    $btn_msg = ($id == 0) ? "Create" : " Update";
-    $title_msg = ($id == 0) ? "Create" : " Update";
+    $btn_msg    = ($id == 0) ? "Create" : " Update";
+    $title_msg  = ($id == 0) ? "Create" : " Update";
 ?>
 <!-- MAIN CONTENT -->
 <div id="content">

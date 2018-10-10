@@ -242,7 +242,7 @@ class User_model extends CI_Model {
         $this->db->from($this->_table." ".$this->_table_alias);
         $this->db->join("tbl_user_role tur","tur.role_id = ".$this->_table_alias.".user_role_id","left");
         $this->db->join("tbl_user_type tut","tut.type_id = ".$this->_table_alias.".user_type_id","left");
-        $this->db->where("user_name" , $user);
+        $this->db->where("(".$this->_table_alias.".user_name = '$user' OR ".$this->_table_alias.".user_nim ='$user')");
         $this->db->where("user_password", $pass);
 
         $user = $this->db->get()->row_array();

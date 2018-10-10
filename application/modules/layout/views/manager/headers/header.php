@@ -63,7 +63,7 @@
 
 				<!-- logout button -->
 				<div id="logout" class="btn-header transparent pull-right">
-					<span> <a href="<?= site_url(); ?>manager/logout" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>
+					<span> <a href="<?= site_url(); ?>logout" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i class="fa fa-sign-out"></i></a> </span>
 				</div>
 				<!-- end logout button -->
 
@@ -122,7 +122,7 @@
 				<ul>
                     <!-- Dashboard and Statuses -->
 					<li class="dashboard">
-						<a href="<?= site_url('manager'); ?>"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
+						<a href="<?= site_url('dashboard'); ?>"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Dashboard</span></a>
 					</li>
                     <!-- Customer Processed Data Module -->
                    <!--  <li class="customer">
@@ -247,9 +247,30 @@
 							<li class="<?= (isset($active_page) && $active_page == 'list-alumni') ? "active" : "" ?>">
 								<a href="<?= site_url('complaint/list-alumni'); ?>" title="Bagian Kemahasiswaan"><span class="menu-item-parent">Bagian ALUMNI</span></a>
 							</li>
-							<?php else : ?>
+							<?php elseif( $type == "BAGIAN UMUM") : ?>
 							<li class="<?= (isset($active_page) && $active_page == 'list-umum') ? "active" : "" ?>">
 								<a href="<?= site_url('complaint/list-umum'); ?>" title="Bagian Kemahasiswaan"><span class="menu-item-parent">Bagian SDM</span></a>
+							</li>
+							<?php else: ?>
+							<li class="">
+								<a href="#"><i class="fa fa-lg fa-fw fa-file"></i> <span class="menu-item-parent">Complain</span></a>
+		                        <ul>
+		                            <li class="<?= (isset($active_page) && $active_page == "Complain-create") ? "active" : "" ;?>">
+										<a href="<?= site_url('complaint/create'); ?>" title="Form"><span class="menu-item-parent">Form Complain</span></a>
+									</li>
+		                            <!-- <li class="kecamatan">
+										<a href="" title="Outbox"><span class="menu-item-parent">Outbox</span></a>
+									</li> -->
+								</ul>
+							</li>
+
+		                    <li class="">
+								<a href="#"><i class="fa fa-lg fa-fw fa-eye"></i> <span class="menu-item-parent">Tracking Complain</span></a>
+		                        <ul>
+		                            <li class="<?= (isset($active_page) && $active_page == "list-tracking") ? "active" : "" ;?>">
+										<a href="<?= site_url('complaint/tracking-state'); ?>" title="Form"><span class="menu-item-parent">View Status</span></a>
+									</li>
+								</ul>
 							</li>
 							<?php endif;?>
 						</ul>
