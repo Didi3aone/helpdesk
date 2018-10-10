@@ -110,7 +110,8 @@ class Index extends MX_Controller  {
 	 */
 	public function logout() {
         //unset sessions and back to login.
-        $this->session->unset_userdata(IS_LOGIN_ADMIN);
+        $this->session->sess_destroy();
+        // $this->session->unset_userdata(IS_LOGIN_ADMIN);
 		redirect('Auth');
 	}
 

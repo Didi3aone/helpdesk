@@ -7,10 +7,10 @@
 		<div id="shortcut">
 			<ul>
 				<li>
-					<a href="<?= site_url(); ?>mahasiswa/change-profile" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-id-card-o fa-4x"></i> <span>Change Profile </span> </span> </a>
+					<a href="<?= site_url(); ?>user/change-profile" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-id-card-o fa-4x"></i> <span>Change Profile </span> </span> </a>
 				</li>
                 <li>
-					<a href="<?= site_url(); ?>mahasiswa/change_password" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-key fa-4x"></i> <span>Change Password </span> </span> </a>
+					<a href="<?= site_url(); ?>user/change_pass" class="jarvismetro-tile big-cubes bg-color-blue"> <span class="iconbox"> <i class="fa fa-key fa-4x"></i> <span>Change Password </span> </span> </a>
 				</li>
 			</ul>
 		</div>

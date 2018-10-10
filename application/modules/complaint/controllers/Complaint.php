@@ -400,9 +400,9 @@ class Complaint extends MX_Controller {
         );
 
 		//load the view.
-		$this->load->view(MANAGER_HEADER_MAHASISWA, $header);
+		$this->load->view(MANAGER_HEADER, $header);
         $this->load->view($this->_view_folder . 'create',$data);
-		$this->load->view(MANAGER_FOOTER_MAHASISWA, $footer);
+		$this->load->view(MANAGER_FOOTER, $footer);
     }
 
     /**

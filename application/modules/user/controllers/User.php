@@ -232,7 +232,13 @@ class User extends MX_Controller  {
             "script" => $this->_js_path . "change_profile.js",
         );
 
-        $data['item'] = $this->_currentUser;
+        $session = array(
+            "name"  => $this->session->userdata("name"),
+            "email" => $this->session->userdata("email"),
+            "nim"   => $this->session->userdata("nim")
+        );
+
+        $data['item'] = $session;
 
 		//load the view.
 		$this->load->view(MANAGER_HEADER, $header);
@@ -243,7 +249,7 @@ class User extends MX_Controller  {
     /**
      * Change Password
      */
-    public function change_password () {
+    public function change_pass() {
         //prepare header title.
         $header = array(
             "title"         => 'Change Password',
@@ -254,13 +260,13 @@ class User extends MX_Controller  {
         );
 
         $footer = array(
-            "script" => $this->_view_folder_js . "change_pass_js",
+            "view_js_nav" => $this->_view_folder_js . "change_pass_js",
         );
 
 		//load the view.
-		$this->load->view(MANAGER_HEADER, $header);
+		$this->load->view(MANAGER_HEADER,$header);
 		$this->load->view($this->_view_folder . 'change-password');
-		$this->load->view(MANAGER_FOOTER, $footer);
+		$this->load->view(MANAGER_FOOTER,$footer);
     }
 
     //////////////////////////////// RULES //////////////////////////////////////
@@ -800,54 +806,56 @@ class User extends MX_Controller  {
      * Change Profile Process form
      */
     public function change_profile_process(){
-		if (!$this->input->is_ajax_request() || $this->input->method(true) != "POST") {
-			exit('No direct script access allowed');
-		}
+        if (!$this->input->is_ajax_request() || $this->input->method(true) != "POST") {
+            exit('No direct script access allowed');
+        }
 
         //set secure to true
-        $this->_secure = true;
+        // $this->_secure = true;
 
         //load form validation lib.
         $this->load->library('form_validation');
 
-		//load the model.
-		$this->load->model('User_model');
+        //load the model.
+        $this->load->model('User_model');
 
         //initial.
         $message['is_error'] = true;
         $message['redirect_to'] = "";
-		$message['error_msg'] = "";
+        $message['error_msg'] = "";
 
-		$id         = $this->_currentUser['user_id'];
-        $name       = sanitize_str_input($this->input->post('name'));
-        $username   = sanitize_str_input($this->input->post('username'));
-        $email      = sanitize_str_input($this->input->post('email'));
+        $id         = $this->session->userdata('id');
+        $name       = $this->input->post('name');
+        $nim        = $this->input->post('nim');
+        $email      = $this->input->post('email');
 
-        $this->_set_rule_validation_profile($id);
+        $this->_set_rule_validation_profile();
 
         if ($this->form_validation->run($this) == FALSE) {
             //validation failed.
             $message['error_msg'] = validation_errors();
         } else {
-			//begin transaction.
+            //begin transaction.
             $this->db->trans_begin();
 
             //validation success, prepare array to DB.
-            $arrayToDB = array('name'       => $name,
-                               'username' 	=> $username,
-                               'email'      => $email);
+            $arrayToDB = array(
+                'user_full_name'  => $name,
+                'user_nim'        => $nim,
+                'user_email'      => $email
+            );
 
-			if (!empty($id)) {
-				$condition = array("user_id" => $id);
+            if (!empty($id)) {
+                $condition = array("user_id" => $id);
                 $insert = $this->User_model->update($arrayToDB,$condition);
-			}
+            }
 
-			if ($this->db->trans_status() === FALSE) {
-				$this->db->trans_rollback();
-				$message['error_msg'] = 'database operation failed.';
+            if ($this->db->trans_status() === FALSE) {
+                $this->db->trans_rollback();
+                $message['error_msg'] = 'database operation failed.';
 
-			} else {
-				$this->db->trans_commit();
+            } else {
+                $this->db->trans_commit();
 
                 //set is error to false
                 $message['is_error'] = false;
@@ -858,22 +866,33 @@ class User extends MX_Controller  {
                 $message['notif_message'] = "Profile has been updated.";
 
                 //on insert, not redirected.
-                $message['redirect_to'] = "/";
+                $message['redirect_to'] = "";
 
 
-				//re-set the session
-				$params = array("row_array" => true,"conditions" => array("user_id" => $id));
-                $data_admin = $this->User_model->get_all_data($params)['datas'];
-                $this->session->set_userdata(ADMIN_SESSION, $data_admin);
-			}
+                //re-set the session
+                $params = array("row_array" => true,"conditions" => array("user_id" => $id));
+                $set = $this->Mahasiswa_model->get_all_data($params)['datas'];
+                //set session user (for login).
+                $sess_data = array(
+                    "IS_LOGIN"              => TRUE,
+                    "name"                  => $set['user_full_name'],
+                    "email"                 => $set['user_email'],
+                    "nim"                   => $set['user_nim'],
+                    "id"                    => $set['user_id'],
+                    "password"              => $set['user_password'],
+                    "nim"                   => $set['user_nim']
+                );
+
+                $this->session->set_userdata($sess_data);
+            }
         }
 
         //encoding and returning.
         $this->output->set_content_type('application/json');
         echo json_encode($message);
         exit;
-
     }
+
 
     /**
      * Change Password Process form
@@ -930,7 +949,7 @@ class User extends MX_Controller  {
                 $message['notif_message'] = "Password has been updated.";
 
                 //on insert, not redirected.
-                $message['redirect_to'] = site_url("manager");
+                $message['redirect_to'] = "";
 
 
 				//re-set the session

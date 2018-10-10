@@ -34,7 +34,7 @@
                     <!-- widget div-->
                     <div>
 
-                        <form class="smart-form" id="changepass-form" action="<?= site_url(); ?>admin/change-password-process" method="post">
+                        <form class="smart-form" id="changepass-form" action="<?= site_url(); ?>user/change-password-process" method="post">
                             <fieldset>
                                 <section>
                                     <label class="label">Old Password <sup class="color-red">*</sup></label>
@@ -71,4 +71,3 @@
         </div>
     </section> <!-- end widget grid -->
 </div> <!-- END MAIN CONTENT -->
-<?php $this->load->view('admin/change_pass_js'); ?>
