@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-/** 
+/**
  * User Controller.
  *
  */
@@ -245,7 +245,7 @@ class User extends MX_Controller  {
 		$this->load->view($this->_view_folder . 'change-profile',$data);
 		$this->load->view(MANAGER_FOOTER, $footer);
     }
- 
+
     /**
      * Change Password
      */
@@ -327,7 +327,7 @@ class User extends MX_Controller  {
      * This is a custom form validation rule to check that username is must unique.
      */
     public function check_username($str, $id) {
-       
+
         //flag.
         $isValid = true;
         $params = array("row_array" => true);
@@ -688,7 +688,7 @@ class User extends MX_Controller  {
 		}
 
         //set secure to true
-        $this->_secure = true;
+        // $this->_secure = true;
 
         //load form validation lib.
         $this->load->library('form_validation');
@@ -729,7 +729,7 @@ class User extends MX_Controller  {
             //validation success, prepare array to DB.
             $_save_data = array(
                 "user_full_name"    => $name,
-                "user_nik"          => $nik,
+                "user_nim"          => $nik,
                 "user_name"         => $username,
                 "user_email"        => $email,
                 "user_type_id"      => $user_type,

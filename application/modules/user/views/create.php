@@ -1,4 +1,5 @@
 <?php
+    //get all data user
     $user_id            = isset($datas["user_id"]) ? $datas["user_id"] : "";
     $name               = isset($datas["user_full_name"]) ? $datas["user_full_name"] : "";
     $username           = isset($datas["user_name"]) ? $datas["user_name"] : "";
@@ -14,8 +15,9 @@
     $created_date       = isset($datas["user_created_date"]) ? $datas["user_created_date"] : "";
     $updated_date       = isset($datas["user_updated_date"]) ? $datas["user_updated_date"] : "";
 
-    $btn_msg = ($user_id == 0) ? "Create" : " Update";
-    $title_msg = ($user_id == 0) ? "Create" : " Update";
+    //title button
+    $btn_msg    = ($user_id == 0) ? "Create" : " Update";
+    $title_msg  = ($user_id == 0) ? "Create" : " Update";
 ?>
 <!-- MAIN CONTENT -->
 <div id="content">
@@ -28,7 +30,7 @@
                 <a class="btn btn-warning back-button" href="<?= site_url("user"); ?>" title="Back" rel="tooltip" data-placement="left" data-original-title="Batal">
 					<i class="fa fa-arrow-circle-left fa-lg"></i>
 				</a>
-				<button class="btn btn-primary submit-form" data-form-target="user-form" title="Simpan" rel="tooltip" data-placement="top" >
+				<button class="btn btn-primary submit-form" data-form-target="user-form" title="<?= $btn_msg; ?>" rel="tooltip" data-placement="top" >
 					<i class="fa fa-floppy-o fa-lg"></i>
 				</button>
 			</h1>
@@ -72,16 +74,16 @@
                                         <label class="select">
                                             <select name="role" id="role">
                                                 <option value="0">-- choose -- </option>
-                                                <?php 
+                                                <?php
                                                     if($role_id != "") {
                                                         echo "<option value=".$role_id." selected>".$role_name."</option>";
                                                         foreach($role as $key => $value) {
                                                             echo "<option value=".$value['role_id']."> ".$value['role_name']."</option>";
-                                                        } 
+                                                        }
                                                     } else {
                                                         foreach($role as $key => $value) {
                                                             echo "<option value=".$value['role_id']."> ".$value['role_name']."</option>";
-                                                        } 
+                                                        }
                                                     }
                                                 ?>
                                             </select>
@@ -94,14 +96,14 @@
                                         <label class="select">
                                             <select name="user_type">
                                                 <option value="">-- choose --</option>
-                                                <?php 
+                                                <?php
                                                     foreach($type as $key => $value) {
                                                         if($user_id != "") {
                                                             echo "<option value=''>test</option>";
                                                         } else {
                                                             echo "<option value=".$value['type_id']."> ".$value['type_name']."</option>";
                                                         }
-                                                    } 
+                                                    }
                                                 ?>
                                             </select>
                                         </label>
@@ -112,14 +114,14 @@
                                         <label class="select">
                                             <select name="fak_id">
                                                 <option value="">-- choose --</option>
-                                                <?php 
+                                                <?php
                                                     foreach($fakultas as $key => $value) {
                                                         if($user_id != "") {
                                                             echo "<option value=''>test</option>";
                                                         } else {
                                                             echo "<option value=".$value['FakultasId']."> ".$value['FakultasName']."</option>";
                                                         }
-                                                    } 
+                                                    }
                                                 ?>
                                             </select>
                                         </label>
